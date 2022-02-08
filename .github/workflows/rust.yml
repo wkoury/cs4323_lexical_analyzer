@@ -20,10 +20,10 @@ jobs:
     - name: Build
       run: cargo build --verbose
     # Clippy
-    - name: Clippy
+    - name: Install Clippy
       run: rustup component add clippy
     - working-directory: ${{ matrix.conf.name }}
-      name: clippy ${{ matrix.conf.name }}
+      name: Run Clippy
       run: cargo clippy --all-targets -- -D warnings
     # Tests
     - name: Run tests
