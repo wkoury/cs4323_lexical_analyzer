@@ -1,3 +1,5 @@
+#![warn(clippy::all)]
+
 use std::env;
 use std::fs::File;
 use std::io::prelude::*;
@@ -10,6 +12,12 @@ use crossterm::{
     style::{Attribute, Color, Print, ResetColor, SetAttribute, SetForegroundColor},
     ExecutableCommand, Result,
 };
+
+mod bookkeeper;
+mod error;
+mod scanner;
+
+use crate::scanner::Source;
 
 fn main() -> Result<()> {
     // Collect the command-line arguments
@@ -40,6 +48,12 @@ fn main() -> Result<()> {
     match file.read_to_string(&mut s) {
         Err(why) => panic!("Couldn't read {}: {}", display, why),
         Ok(_) => println!("{}", s),
+    };
+
+    let mut src: Source = Source::new(s);
+
+    for _ in 1..2 {
+        src.scan();
     }
 
     // Return an Ok result
