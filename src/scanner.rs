@@ -2,13 +2,15 @@
 use lazy_static::lazy_static;
 use regex::Regex;
 
+use crate::bookkeeper::{SymbolType, Token};
+
 // A struct to represent the scanner, keeping track of where the character is consumed, among other things.
 #[derive(Clone)]
 pub struct Source {
     source: String,
     index: usize,
     state: u32,
-    flag: bool, // FIXME: I would like to rename this, I don't think the name is very informative right now.
+    extra_token: Option<Token>,
 }
 
 impl Source {
@@ -18,15 +20,14 @@ impl Source {
             source: src,
             index: 0,
             state: 0,
-            flag: false,
+            extra_token: None,
         }
     }
 
-    // Step to the next character in the source and return it.
-    pub fn step(&mut self) -> char {
-        // TODO: skip whitespace
+    fn read_character(&mut self) -> char {
         let ret: char = self.source.chars().nth(self.index).unwrap();
         self.index += 1;
+        println!("read character {} from the source", ret);
 
         ret
     }
@@ -37,16 +38,560 @@ impl Source {
     }
 
     // Start moving along the DFA.
-    pub fn scan(&mut self) {
+    pub fn scan(&mut self) -> Option<Token> {
         if self.is_done() {
-            return;
+            return None;
+        }
+
+        if self.extra_token.is_some() {
+            println!("The flag is marked.");
+            // Return the extra token in here
+            return None;
         }
 
         self.initial_state();
+
+        // FIXME: this is hard-coded and a filler.
+        Some(Token {
+            token: "package".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
     }
 
+    // Start another iteration of the DFA.
     fn initial_state(&mut self) {
-        println!("hi");
+        let mut c = self.read_character();
+
+        while c.is_whitespace() {
+            c = self.read_character();
+        }
+
+        match c {
+            'p' => self.state_1(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_1(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'a' => self.state_2(),
+            'r' => self.state_8(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_2(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'c' => self.state_3(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_3(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'k' => self.state_4(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_4(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'a' => self.state_5(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_5(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'g' => self.state_6(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_6(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'e' => self.state_7(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_7(&mut self) {
+        let c = self.read_character();
+
+        if is_whitespace(c) {
+            println!("WE JUST FOUND THE TOKEN 'PACKAGE'!");
+        } else {
+            panic!("error");
+        }
+    }
+
+    fn state_8(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'i' => self.state_9(),
+            'o' => self.state_16(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_9(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'v' => self.state_10(),
+            'n' => self.state_14(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_10(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'a' => self.state_11(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_11(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            't' => self.state_12(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_12(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'e' => self.state_13(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_13(&mut self) {
+        let c = self.read_character();
+
+        if is_whitespace(c) {
+            println!("WE JUST FOUND THE KEYWORD 'private'!");
+        } else {
+            panic!("Error");
+        }
+    }
+
+    fn state_14(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            't' => self.state_15(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_15(&mut self) {
+        let c = self.read_character();
+
+        if is_whitespace(c) {
+            println!("WE just found the keyword 'print'");
+        } else {
+            panic!("error");
+        }
+    }
+
+    fn state_16(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            't' => self.state_17(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_17(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'e' => self.state_18(),
+            _ => panic!("Error"),
+        }
+    }
+
+    fn state_18(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'c' => self.state_19(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_19(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            't' => self.state_20(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_20(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'e' => self.state_21(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_21(&mut self) {
+        let c = self.read_character();
+
+        match c {
+            'd' => self.state_22(),
+            _ => panic!("error"),
+        }
+    }
+
+    fn state_22(&mut self) {
+        let c = self.read_character();
+
+        if is_whitespace(c) {
+            println!("we found the keyword 'protected'");
+        } else {
+            panic!("Error");
+        }
+    }
+
+    fn state_23(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_24(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_25(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_26(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_27(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_28(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_29(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_30(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_31(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_32(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_33(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_34(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_35(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_36(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_37(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_38(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_39(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_40(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_41(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_42(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_43(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_44(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_45(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_46(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_47(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_48(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_49(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_50(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_51(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_52(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_53(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_54(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_55(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_56(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_57(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_58(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_59(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_60(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_61(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_62(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_63(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_64(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_65(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_66(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_67(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_68(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_69(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_70(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_71(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_72(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_73(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_74(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_75(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_76(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_77(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_78(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_79(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_80(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_81(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_82(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_83(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_84(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_85(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_86(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_87(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_88(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_89(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_90(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_91(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_92(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_93(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_94(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_95(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_96(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_97(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_98(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_99(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_100(&mut self) {
+        let c = self.read_character();
+    }
+
+    fn state_101(&mut self) {
+        let c = self.read_character();
     }
 }
 
@@ -202,8 +747,7 @@ mod test_is_special_symbol {
 
 // Given a character, determine if it is whitespace
 pub fn is_whitespace(c: char) -> bool {
-    if c == '\0' {
-        // FIXME: do we actually need this? is this useful?
+    if c == '\0' || c == ' ' || c == '\n' || c == '\t' {
         true
     } else {
         c.to_string().contains(char::is_whitespace)

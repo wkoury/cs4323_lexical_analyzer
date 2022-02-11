@@ -52,7 +52,7 @@ fn main() -> Result<()> {
 
     let mut src: Source = Source::new(s);
 
-    for _ in 1..2 {
+    while !src.is_done() {
         src.scan();
     }
 
