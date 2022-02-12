@@ -3,8 +3,7 @@ use lazy_static::lazy_static;
 use regex::Regex;
 
 use crate::bookkeeper::{SymbolType, Token};
-// FIXME get errors working
-// use crate::error::{Errors};
+use crate::error::{Error, ErrorType};
 
 // A struct to represent the scanner, keeping track of where the character is consumed, among other things.
 #[derive(Clone, Debug)]
@@ -12,8 +11,9 @@ pub struct Source {
     source: String,
     index: usize,
     line_number: usize,
-    token: Option<Token>,
-    extra_token: Option<Token>,
+    pub(crate) token: Option<Token>,
+    pub(crate) extra_token: Option<Token>,
+    pub(crate) error: Option<Error>,
 }
 
 impl Source {
@@ -25,6 +25,7 @@ impl Source {
             line_number: 1,
             token: None,
             extra_token: None,
+            error: None,
         }
     }
 
@@ -53,9 +54,10 @@ impl Source {
         if self.extra_token.is_some() {
             println!("The flag is marked.");
             // Return the extra token in here
-            return None;
+            return self.extra_token.as_ref();
         }
 
+        self.error = None;
         self.token = None;
         self.extra_token = None;
 
@@ -74,7 +76,11 @@ impl Source {
 
         match c {
             'p' => self.state_1(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -84,7 +90,11 @@ impl Source {
         match c {
             'a' => self.state_2(),
             'r' => self.state_8(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -93,7 +103,11 @@ impl Source {
 
         match c {
             'c' => self.state_3(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -102,7 +116,11 @@ impl Source {
 
         match c {
             'k' => self.state_4(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -111,7 +129,11 @@ impl Source {
 
         match c {
             'a' => self.state_5(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -120,7 +142,11 @@ impl Source {
 
         match c {
             'g' => self.state_6(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -129,7 +155,11 @@ impl Source {
 
         match c {
             'e' => self.state_7(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -143,7 +173,9 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            panic!("error");
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
         }
     }
 
@@ -153,7 +185,11 @@ impl Source {
         match c {
             'i' => self.state_9(),
             'o' => self.state_16(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -163,7 +199,11 @@ impl Source {
         match c {
             'v' => self.state_10(),
             'n' => self.state_14(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -172,7 +212,11 @@ impl Source {
 
         match c {
             'a' => self.state_11(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -181,7 +225,11 @@ impl Source {
 
         match c {
             't' => self.state_12(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -190,7 +238,11 @@ impl Source {
 
         match c {
             'e' => self.state_13(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -204,7 +256,9 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            panic!("Error");
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
         }
     }
 
@@ -213,7 +267,11 @@ impl Source {
 
         match c {
             't' => self.state_15(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -227,7 +285,9 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            panic!("error");
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
         }
     }
 
@@ -236,7 +296,11 @@ impl Source {
 
         match c {
             't' => self.state_17(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -245,7 +309,11 @@ impl Source {
 
         match c {
             'e' => self.state_18(),
-            _ => panic!("Error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -254,7 +322,11 @@ impl Source {
 
         match c {
             'c' => self.state_19(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -263,7 +335,11 @@ impl Source {
 
         match c {
             't' => self.state_20(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -272,7 +348,11 @@ impl Source {
 
         match c {
             'e' => self.state_21(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -281,7 +361,11 @@ impl Source {
 
         match c {
             'd' => self.state_22(),
-            _ => panic!("error"),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
         }
     }
 
@@ -295,7 +379,9 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            panic!("Error");
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
         }
     }
 

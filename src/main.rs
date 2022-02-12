@@ -6,12 +6,7 @@ use std::io::prelude::*;
 use std::path::Path;
 use std::process;
 
-use std::io::stdout;
-
-use crossterm::{
-    style::{Attribute, Color, Print, ResetColor, SetAttribute, SetForegroundColor},
-    ExecutableCommand, Result,
-};
+use colored::*;
 
 mod bookkeeper;
 mod error;
@@ -19,19 +14,13 @@ mod scanner;
 
 use crate::scanner::Source;
 
-fn main() -> Result<()> {
+fn main() {
     // Collect the command-line arguments
     let args: Vec<String> = env::args().collect();
     // Check for invalid use and terminate if required
     if args.len() != 2 {
-        stdout()
-            .execute(SetForegroundColor(Color::Red))?
-            .execute(SetAttribute(Attribute::Bold))?
-            .execute(Print("Usage: "))?
-            .execute(SetAttribute(Attribute::NoBold))?
-            .execute(SetAttribute(Attribute::Italic))?
-            .execute(Print("./scanner <filename>\n"))?
-            .execute(ResetColor)?;
+        print!("{}", "Usage: ".bold().red());
+        println!("{}", "./scanner <filename>".red());
         process::exit(1);
     }
 
@@ -54,9 +43,11 @@ fn main() -> Result<()> {
 
     while !src.is_done() {
         let tkn = src.scan();
-        println!("{:?}", tkn);
-    }
 
-    // Return an Ok result
-    Ok(())
+        println!("{:?}", tkn);
+        if src.error.is_some() {
+            print!("{}", "An error occurred: ".red().bold());
+            println!("{:?}", src.error);
+        }
+    }
 }
