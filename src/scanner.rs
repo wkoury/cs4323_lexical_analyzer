@@ -71,7 +71,11 @@ impl Source {
         let mut c = self.read_character();
 
         while c.is_whitespace() {
-            c = self.read_character();
+            if !self.is_done() {
+                c = self.read_character();
+            } else {
+                return;
+            }
         }
 
         match c {
@@ -898,5 +902,58 @@ mod test_is_whitespace {
     #[test]
     fn test_period() {
         assert!(!is_whitespace('.'));
+    }
+}
+
+#[cfg(test)]
+mod scanner_tests {
+    use crate::scanner::*;
+
+    // Verify that the scanner can recognize the keyword package.
+    #[test]
+    fn test_package() {
+        let src_str = "package a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "package".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Verify that the scanner can recognize the protected package.
+    #[test]
+    fn test_protected() {
+        let src_str = "protected package a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "protected".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_whitespace() {
+        let src_str = " \t\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn: Option<&Token> = src.scan();
+        let expected: Option<&Token> = None;
+
+        // Basically what this test is doing is checking if tkn == None.
+        debug_assert_eq!(tkn, expected);
     }
 }
