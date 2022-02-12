@@ -81,6 +81,9 @@ impl Source {
         match c {
             'p' => self.state_1(),
             'i' => self.state_23(),
+            'a' => self.state_32(),
+            'f' => self.state_42(),
+            's' => self.state_51(),
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -528,102 +531,344 @@ impl Source {
 
     fn state_32(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'b' => self.state_33(),
+            'n' => self.state_40(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_33(&mut self) {
         let c = self.read_character();
+
+        match c {
+            's' => self.state_34(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_34(&mut self) {
         let c = self.read_character();
+
+        match c {
+            't' => self.state_35(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_35(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'r' => self.state_36(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_36(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'a' => self.state_37(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_37(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'c' => self.state_38(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_38(&mut self) {
         let c = self.read_character();
+
+        match c {
+            't' => self.state_39(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_39(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "abstract".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_40(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'd' => self.state_41(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_41(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "and".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_42(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'i' => self.state_43(),
+            'a' => self.state_47(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_43(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'n' => self.state_44(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_44(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'a' => self.state_45(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_45(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'l' => self.state_46(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_46(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "final".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_47(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'l' => self.state_48(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_48(&mut self) {
         let c = self.read_character();
+
+        match c {
+            's' => self.state_49(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_49(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'e' => self.state_50(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_50(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "false".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_51(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'e' => self.state_52(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_52(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'a' => self.state_53(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_53(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'l' => self.state_54(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_54(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'e' => self.state_55(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_55(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'd' => self.state_56(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_56(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "sealed".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_57(&mut self) {
