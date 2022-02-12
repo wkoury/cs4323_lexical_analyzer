@@ -1007,8 +1007,20 @@ mod test_is_whitespace {
 }
 
 #[cfg(test)]
-mod scanner_tests {
+mod scanner_keyword_tests {
     use crate::scanner::*;
+
+    #[test]
+    fn test_whitespace() {
+        let src_str = " \t\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn: Option<&Token> = src.scan();
+        let expected: Option<&Token> = None;
+
+        // Basically what this test is doing is checking if tkn == None.
+        debug_assert_eq!(tkn, expected);
+    }
 
     // Verify that the scanner can recognize the keyword package.
     #[test]
@@ -1119,14 +1131,362 @@ mod scanner_tests {
     }
 
     #[test]
-    fn test_whitespace() {
-        let src_str = " \t\n".to_string();
+    fn test_abstract() {
+        let src_str = "abstract package a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn: Option<&Token> = src.scan();
-        let expected: Option<&Token> = None;
+        let tkn = src.scan().unwrap();
 
-        // Basically what this test is doing is checking if tkn == None.
-        debug_assert_eq!(tkn, expected);
+        let expected = &Some(Token {
+            token: "abstract".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_and() {
+        let src_str = "and is true".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "and".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_final() {
+        let src_str = "final int a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "final".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_false() {
+        let src_str = "false and true".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "false".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_sealed() {
+        let src_str = "sealed int a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "sealed".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_class() {
+        let src_str = "class a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "class".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_object() {
+        let src_str = "object a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "object".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_val() {
+        let src_str = "val a = false;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "val".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_def() {
+        let src_str = "def this.is.function".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "def".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_leq() {
+        let src_str = "x <= 5".to_string();
+        let mut src = Source::new(src_str);
+
+        // Skip first token just to see what happens
+        src.scan();
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "<=".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_else() {
+        let src_str = "else if".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "else".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_while() {
+        let src_str = "while is true".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "while".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_case() {
+        let src_str = "case a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "case".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_geq() {
+        let src_str = "x >= 5".to_string();
+        let mut src = Source::new(src_str);
+
+        src.scan();
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "and".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_return() {
+        let src_str = "return a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "return".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_not() {
+        let src_str = "not true".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "not".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_true() {
+        let src_str = "true and false = false".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "is".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_or() {
+        let src_str = "or is true".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "or".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_real() {
+        let src_str = "real a = 5.0".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "real".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    #[test]
+    fn test_bool() {
+        let src_str = "bool b = false;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "bool".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Test that the scanner recognizes an invalid keyword and throws the proper error.
+    #[test]
+    fn test_invalid_keyword() {
+        let src_str = "this_is_not_a_valid_keyword".to_string();
+        let mut src = Source::new(src_str);
+
+        src.scan();
+
+        let expected = Some(Error {
+            error_type: ErrorType::InvalidSymbol,
+        });
+
+        let actual = src.error;
+
+        assert_eq!(expected, actual);
     }
 }
