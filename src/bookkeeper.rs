@@ -1,7 +1,7 @@
 #![warn(clippy::all)]
 
 // Types of symbols in the Simple Scala programming language.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum SymbolType {
     Keyword,
     Constant,
@@ -9,7 +9,7 @@ pub enum SymbolType {
     SpecialSymbol,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Token {
     pub(crate) token: String,
     pub(crate) symbol_type: SymbolType,

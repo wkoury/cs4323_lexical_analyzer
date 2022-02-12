@@ -3,13 +3,16 @@ use lazy_static::lazy_static;
 use regex::Regex;
 
 use crate::bookkeeper::{SymbolType, Token};
+// FIXME get errors working
+// use crate::error::{Errors};
 
 // A struct to represent the scanner, keeping track of where the character is consumed, among other things.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Source {
     source: String,
     index: usize,
-    state: u32,
+    line_number: usize,
+    token: Option<Token>,
     extra_token: Option<Token>,
 }
 
@@ -19,13 +22,17 @@ impl Source {
         Source {
             source: src,
             index: 0,
-            state: 0,
+            line_number: 1,
+            token: None,
             extra_token: None,
         }
     }
 
     fn read_character(&mut self) -> char {
         let ret: char = self.source.chars().nth(self.index).unwrap();
+        if ret == '\n' {
+            self.line_number += 1;
+        }
         self.index += 1;
         println!("read character {} from the source", ret);
 
@@ -38,7 +45,7 @@ impl Source {
     }
 
     // Start moving along the DFA.
-    pub fn scan(&mut self) -> Option<Token> {
+    pub fn scan(&mut self) -> Option<&Token> {
         if self.is_done() {
             return None;
         }
@@ -49,14 +56,12 @@ impl Source {
             return None;
         }
 
+        self.token = None;
+        self.extra_token = None;
+
         self.initial_state();
 
-        // FIXME: this is hard-coded and a filler.
-        Some(Token {
-            token: "package".to_string(),
-            symbol_type: SymbolType::Keyword,
-            line_number: 1,
-        })
+        self.token.as_ref()
     }
 
     // Start another iteration of the DFA.
@@ -132,7 +137,11 @@ impl Source {
         let c = self.read_character();
 
         if is_whitespace(c) {
-            println!("WE JUST FOUND THE TOKEN 'PACKAGE'!");
+            self.token = Some(Token {
+                token: "package".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
         } else {
             panic!("error");
         }
@@ -189,7 +198,11 @@ impl Source {
         let c = self.read_character();
 
         if is_whitespace(c) {
-            println!("WE JUST FOUND THE KEYWORD 'private'!");
+            self.token = Some(Token {
+                token: "private".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
         } else {
             panic!("Error");
         }
@@ -208,7 +221,11 @@ impl Source {
         let c = self.read_character();
 
         if is_whitespace(c) {
-            println!("WE just found the keyword 'print'");
+            self.token = Some(Token {
+                token: "print".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
         } else {
             panic!("error");
         }
@@ -272,7 +289,11 @@ impl Source {
         let c = self.read_character();
 
         if is_whitespace(c) {
-            println!("we found the keyword 'protected'");
+            self.token = Some(Token {
+                token: "protected".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
         } else {
             panic!("Error");
         }

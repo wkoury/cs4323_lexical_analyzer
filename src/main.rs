@@ -53,7 +53,8 @@ fn main() -> Result<()> {
     let mut src: Source = Source::new(s);
 
     while !src.is_done() {
-        src.scan();
+        let tkn = src.scan();
+        println!("{:?}", tkn);
     }
 
     // Return an Ok result
