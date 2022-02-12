@@ -80,6 +80,7 @@ impl Source {
 
         match c {
             'p' => self.state_1(),
+            'i' => self.state_23(),
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -170,7 +171,7 @@ impl Source {
     fn state_7(&mut self) {
         let c = self.read_character();
 
-        if is_whitespace(c) {
+        if c.is_whitespace() {
             self.token = Some(Token {
                 token: "package".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -253,7 +254,7 @@ impl Source {
     fn state_13(&mut self) {
         let c = self.read_character();
 
-        if is_whitespace(c) {
+        if c.is_whitespace() {
             self.token = Some(Token {
                 token: "private".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -282,7 +283,7 @@ impl Source {
     fn state_15(&mut self) {
         let c = self.read_character();
 
-        if is_whitespace(c) {
+        if c.is_whitespace() {
             self.token = Some(Token {
                 token: "print".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -376,7 +377,7 @@ impl Source {
     fn state_22(&mut self) {
         let c = self.read_character();
 
-        if is_whitespace(c) {
+        if c.is_whitespace() {
             self.token = Some(Token {
                 token: "protected".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -391,38 +392,138 @@ impl Source {
 
     fn state_23(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'm' => self.state_24(),
+            'f' => self.state_29(),
+            'n' => self.state_30(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_24(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'p' => self.state_25(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_25(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'o' => self.state_26(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_26(&mut self) {
         let c = self.read_character();
+
+        match c {
+            'r' => self.state_27(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_27(&mut self) {
         let c = self.read_character();
+
+        match c {
+            't' => self.state_28(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
     fn state_28(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "import".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_29(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "if".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_30(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "in".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            match c {
+                't' => self.state_31(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
+        }
     }
 
     fn state_31(&mut self) {
         let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "int".to_string(),
+                symbol_type: SymbolType::Keyword,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
     }
 
     fn state_32(&mut self) {
@@ -927,7 +1028,7 @@ mod scanner_tests {
         assert_eq!(tkn, expected);
     }
 
-    // Verify that the scanner can recognize the protected package.
+    // Verify that the scanner can recognize the protected keyword.
     #[test]
     fn test_protected() {
         let src_str = "protected package a;".to_string();
@@ -937,6 +1038,78 @@ mod scanner_tests {
 
         let expected = &Some(Token {
             token: "protected".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Verify that the scanner can recognize the keyword "int."
+    #[test]
+    fn test_int() {
+        let src_str = "int a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "int".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Verify that the scanner can recognize the keyword "if."
+    #[test]
+    fn test_if() {
+        let src_str = "if a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "if".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Verify that the scanner can recognize the keyword "in."
+    #[test]
+    fn test_in() {
+        let src_str = "in a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "in".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 1,
+        })
+        .unwrap();
+
+        assert_eq!(tkn, expected);
+    }
+
+    // Verify that the scanner can recognize the keyword "import."
+    #[test]
+    fn test_import() {
+        let src_str = "import package a;".to_string();
+        let mut src = Source::new(src_str);
+
+        let tkn = src.scan().unwrap();
+
+        let expected = &Some(Token {
+            token: "import".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
         })
