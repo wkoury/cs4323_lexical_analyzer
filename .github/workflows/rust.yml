@@ -24,7 +24,7 @@ jobs:
       run: rustup component add clippy
     - working-directory: ${{ matrix.conf.name }}
       name: Run Clippy
-      run: cargo clippy --all-targets -- -D warnings
+      run: cargo clippy
     # Tests
     - name: Run tests
       run: cargo test --verbose
