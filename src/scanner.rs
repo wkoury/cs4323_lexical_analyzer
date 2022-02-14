@@ -1,6 +1,4 @@
 #![warn(clippy::all)]
-use lazy_static::lazy_static;
-use regex::Regex;
 
 use crate::bookkeeper::{SymbolType, Token};
 use crate::error::{Error, ErrorType};
@@ -11,6 +9,7 @@ pub struct Source {
     source: String,
     index: usize,
     line_number: usize,
+    scanned_characters: String,
     pub(crate) token: Option<Token>,
     pub(crate) extra_token: Option<Token>,
     pub(crate) error: Option<Error>,
@@ -23,6 +22,7 @@ impl Source {
             source: src,
             index: 0,
             line_number: 1,
+            scanned_characters: "".to_string(),
             token: None,
             extra_token: None,
             error: None,
@@ -31,10 +31,18 @@ impl Source {
 
     fn read_character(&mut self) -> char {
         let ret: char = self.source.chars().nth(self.index).unwrap();
-        if ret == '\n' {
+        // Increment line number if we encountered a newline on the last read
+        if self.index != 0 && self.source.chars().nth(self.index - 1).unwrap() == '\n' {
             self.line_number += 1;
         }
+        // Increment the index
         self.index += 1;
+        // Add the scanned character to our potential token, but only if it is not whitespace or a special symbol.
+        // TODO: handle special symbols
+        if !(ret.is_whitespace() || is_special_symbol(ret)) {
+            self.scanned_characters.push(ret);
+        }
+
         println!("read character {} from the source", ret);
 
         ret
@@ -57,6 +65,8 @@ impl Source {
             return self.extra_token.as_ref();
         }
 
+        // Reset the potential token, previously accepted token, potential extra token, etc.
+        self.scanned_characters = "".to_string();
         self.error = None;
         self.token = None;
         self.extra_token = None;
@@ -96,6 +106,10 @@ impl Source {
             't' => self.state_98(),
             'v' => self.state_102(),
             'w' => self.state_105(),
+            // By putting these below the above, we should be able to handle all letters so that we can go to the <id> partition of the DFA.
+            'A'..='z' => self.state_114(), // FIXME: I need a new state!!! And should I accept capital letters?
+            '.' => self.state_110(),
+            '0'..='9' => self.state_112(),
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1619,112 +1633,121 @@ impl Source {
             });
         }
     }
-}
 
-// Given a character, determine whether it is alphabetical.
-pub fn is_alphabetical(c: char) -> bool {
-    lazy_static! {
-        static ref RE: Regex = Regex::new(r"[A-z]").unwrap();
-    }
-    RE.is_match(&c.to_string())
-}
+    fn state_110(&mut self) {
+        let c = self.read_character();
 
-#[cfg(test)]
-mod is_alphabetical_tests {
-    use crate::scanner::is_alphabetical;
-
-    #[test]
-    fn test_lowercase_a() {
-        assert!(is_alphabetical('a'));
-    }
-
-    #[test]
-    fn test_uppercase_a() {
-        assert!(is_alphabetical('A'));
+        match c {
+            '0'..='9' => self.state_111(),
+            '.' => {
+                self.error = Some(Error {
+                    error_type: ErrorType::ConstantHasTooManyPeriods,
+                })
+            }
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 
-    #[test]
-    fn test_uppercase_z() {
-        assert!(is_alphabetical('Z'));
+    fn state_111(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: self.scanned_characters.clone(),
+                symbol_type: SymbolType::Constant,
+                line_number: self.line_number,
+            });
+        } else {
+            match c {
+                '0'..='9' => self.state_111(), // Recurse
+                '.' => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::ConstantHasTooManyPeriods,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
+        }
     }
 
-    #[test]
-    fn test_lowercase_z() {
-        assert!(is_alphabetical('z'));
+    fn state_112(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: self.scanned_characters.clone(),
+                symbol_type: SymbolType::Constant,
+                line_number: self.line_number,
+            });
+        } else {
+            match c {
+                '0'..='9' => self.state_112(), // Recurse
+                '.' => self.state_113(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
+        }
     }
 
-    #[test]
-    fn test_uppercase_m() {
-        assert!(is_alphabetical('M'));
+    fn state_113(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: self.scanned_characters.clone(),
+                symbol_type: SymbolType::Constant,
+                line_number: self.line_number,
+            });
+        } else {
+            match c {
+                '0'..='9' => self.state_111(), // Recurse
+                '.' => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::ConstantHasTooManyPeriods,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
+        }
     }
 
-    #[test]
-    fn test_lowercase_m() {
-        assert!(is_alphabetical('m'));
-    }
+    // This state is reserved for the identifiers partition of the DFA.
+    fn state_114(&mut self) {
+        let c = self.read_character();
 
-    #[test]
-    fn test_digit_zero() {
-        assert!(!is_alphabetical('0'));
-    }
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: self.scanned_characters.clone(),
+                symbol_type: SymbolType::Identifier,
+                line_number: self.line_number,
+            });
+        }
 
-    #[test]
-    fn test_digit_nine() {
-        assert!(!is_alphabetical('9'));
-    }
-}
-
-// Given a character, determine if it is a digit.
-fn is_digit(c: char) -> bool {
-    lazy_static! {
-        static ref RE: Regex = Regex::new(r"[0-9]").unwrap();
-    }
-
-    RE.is_match(&c.to_string())
-}
-
-#[cfg(test)]
-mod is_digit_tests {
-    use crate::scanner::is_digit;
-
-    #[test]
-    fn test_lowercase_a() {
-        assert!(!is_digit('a'));
-    }
-
-    #[test]
-    fn test_uppercase_a() {
-        assert!(!is_digit('A'));
-    }
-
-    #[test]
-    fn test_uppercase_z() {
-        assert!(!is_digit('Z'));
-    }
-
-    #[test]
-    fn test_lowercase_z() {
-        assert!(!is_digit('z'));
-    }
-
-    #[test]
-    fn test_uppercase_m() {
-        assert!(!is_digit('M'));
-    }
-
-    #[test]
-    fn test_lowercase_m() {
-        assert!(!is_digit('m'));
-    }
-
-    #[test]
-    fn test_digit_zero() {
-        assert!(is_digit('0'));
-    }
-
-    #[test]
-    fn test_digit_nine() {
-        assert!(is_digit('9'));
+        match c {
+            'A'..='z' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            '.' => self.state_114(),
+            _ => {
+                self.error = Some(Error {
+                    error_type: ErrorType::InvalidSymbol,
+                })
+            }
+        }
     }
 }
 
@@ -1734,90 +1757,6 @@ const SPECIAL_SYMBOLS: [char; 12] = ['#', ';', '{', '}', '(', ')', ':', ',', '='
 // Given a character, determines if the symbol is a special symbol.
 pub fn is_special_symbol(c: char) -> bool {
     SPECIAL_SYMBOLS.contains(&c)
-}
-
-#[cfg(test)]
-mod test_is_special_symbol {
-    use crate::scanner::is_special_symbol;
-
-    #[test]
-    fn test_pound() {
-        assert!(is_special_symbol('#'));
-    }
-
-    #[test]
-    fn test_at() {
-        assert!(is_special_symbol('@'));
-    }
-
-    #[test]
-    fn test_comma() {
-        assert!(is_special_symbol(','));
-    }
-
-    #[test]
-    fn test_a() {
-        assert!(!is_special_symbol('a'));
-    }
-
-    #[test]
-    fn test_z() {
-        assert!(!is_special_symbol('z'));
-    }
-
-    #[test]
-    fn test_five() {
-        assert!(!is_special_symbol('5'));
-    }
-}
-
-// Given a character, determine if it is whitespace
-pub fn is_whitespace(c: char) -> bool {
-    if c == '\0' || c == ' ' || c == '\n' || c == '\t' {
-        true
-    } else {
-        c.to_string().contains(char::is_whitespace)
-    }
-}
-
-#[cfg(test)]
-mod test_is_whitespace {
-    use crate::scanner::is_whitespace;
-
-    #[test]
-    fn test_newline() {
-        assert!(is_whitespace('\n'));
-    }
-
-    #[test]
-    fn test_space() {
-        assert!(is_whitespace(' '));
-    }
-
-    #[test]
-    fn test_tab() {
-        assert!(is_whitespace('\t'));
-    }
-
-    #[test]
-    fn test_null() {
-        assert!(is_whitespace('\0'));
-    }
-
-    #[test]
-    fn test_a() {
-        assert!(!is_whitespace('a'));
-    }
-
-    #[test]
-    fn test_one() {
-        assert!(!is_whitespace('1'));
-    }
-
-    #[test]
-    fn test_period() {
-        assert!(!is_whitespace('.'));
-    }
 }
 
 #[cfg(test)]
@@ -2300,6 +2239,135 @@ mod scanner_keyword_tests {
         });
 
         let actual = src.error;
+
+        assert_eq!(expected, actual);
+    }
+}
+
+#[cfg(test)]
+mod scanner_constant_tests {
+    use crate::scanner::*;
+
+    #[test]
+    fn test_zero_point_zero() {
+        let src_str = "0.0\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "0.0".to_string(),
+            symbol_type: SymbolType::Constant,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_two_hundred_point_six() {
+        let src_str = "200.6\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "200.6".to_string(),
+            symbol_type: SymbolType::Constant,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_point_four_seven() {
+        let src_str = ".47\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: ".47".to_string(),
+            symbol_type: SymbolType::Constant,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_zero() {
+        let src_str = "00\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "00".to_string(),
+            symbol_type: SymbolType::Constant,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+}
+
+#[cfg(test)]
+mod scanner_id_tests {
+    use crate::scanner::*;
+
+    #[test]
+    fn test_x() {
+        let src_str = "x\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "x".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_xx() {
+        let src_str = "xx\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "xx".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_x_with_semicolon() {
+        let src_str = "x;\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "x;".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
 
         assert_eq!(expected, actual);
     }

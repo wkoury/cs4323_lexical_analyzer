@@ -3,7 +3,7 @@
 #[derive(Debug, Clone, PartialEq)]
 pub enum ErrorType {
     InvalidSymbol,
-    IdentifierHasTooManyPeriods,
+    ConstantHasTooManyPeriods,
     AllOthers,
     // TODO: add more as you come up with them
 }
