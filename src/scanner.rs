@@ -37,13 +37,26 @@ impl Source {
         }
         // Increment the index
         self.index += 1;
+
+        // Handle special symbols
+        if is_adjacent_special_symbol(ret) {
+            self.extra_token = Some(Token {
+                token: ret.to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+            // If we read tokens previous to this, we need to keep doing that
+            if !self.scanned_characters.is_empty() {
+                return self.read_character();
+            }
+        }
+
         // Add the scanned character to our potential token, but only if it is not whitespace or a special symbol.
-        // TODO: handle special symbols
-        if !(ret.is_whitespace() || is_special_symbol(ret)) {
+        if !(ret.is_whitespace() || is_adjacent_special_symbol(ret)) {
             self.scanned_characters.push(ret);
         }
 
-        println!("read character {} from the source", ret);
+        eprintln!("read character {} from the source", ret);
 
         ret
     }
@@ -60,7 +73,7 @@ impl Source {
         }
 
         if self.extra_token.is_some() {
-            println!("The flag is marked.");
+            println!("The extra token flag is marked.");
             // Return the extra token in here
             return self.extra_token.as_ref();
         }
@@ -78,9 +91,12 @@ impl Source {
 
     // Start another iteration of the DFA.
     fn initial_state(&mut self) {
+        eprintln!("entered initial state");
+
         let mut c = self.read_character();
 
         while c.is_whitespace() {
+            eprintln!("found whitespace");
             if !self.is_done() {
                 c = self.read_character();
             } else {
@@ -98,7 +114,7 @@ impl Source {
             'c' => self.state_61(),
             'd' => self.state_69(),
             'e' => self.state_72(),
-            '>' => self.state_76(),
+            '=' => self.state_76(),
             '<' => self.state_78(),
             'n' => self.state_80(),
             'o' => self.state_83(),
@@ -107,15 +123,33 @@ impl Source {
             'v' => self.state_102(),
             'w' => self.state_105(),
             // By putting these below the above, we should be able to handle all letters so that we can go to the <id> partition of the DFA.
-            'A'..='z' => self.state_114(), // FIXME: I need a new state!!! And should I accept capital letters?
+            c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_110(),
             '0'..='9' => self.state_112(),
+            // Special symbols to accept outright
+            '#' => self.state_115(),
+            ';' => self.state_116(),
+            '{' => self.state_117(),
+            '}' => self.state_118(),
+            '(' => self.state_119(),
+            ')' => self.state_120(),
+            ':' => self.state_121(),
+            ',' => self.state_122(),
+            '+' => self.state_123(),
+            '*' => self.state_124(),
+            '@' => self.state_125(),
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
                 })
             }
         }
+
+        // Accept an outright found special symbol, *not* as an extra token.
+        // if self.extra_token.is_some() && self.token.is_none() {
+        //     self.token = self.extra_token.clone();
+        //     self.extra_token = None;
+        // }
     }
 
     fn state_1(&mut self) {
@@ -124,6 +158,16 @@ impl Source {
         match c {
             'a' => self.state_2(),
             'r' => self.state_8(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -137,6 +181,16 @@ impl Source {
 
         match c {
             'c' => self.state_3(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -150,6 +204,16 @@ impl Source {
 
         match c {
             'k' => self.state_4(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -163,6 +227,16 @@ impl Source {
 
         match c {
             'a' => self.state_5(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -176,6 +250,16 @@ impl Source {
 
         match c {
             'g' => self.state_6(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -189,6 +273,16 @@ impl Source {
 
         match c {
             'e' => self.state_7(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -207,9 +301,23 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                c if c.is_whitespace() => {
+                    self.token = Some(Token {
+                        token: self.scanned_characters.clone(),
+                        symbol_type: SymbolType::Identifier,
+                        line_number: self.line_number,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -219,6 +327,16 @@ impl Source {
         match c {
             'i' => self.state_9(),
             'o' => self.state_16(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -233,6 +351,16 @@ impl Source {
         match c {
             'v' => self.state_10(),
             'n' => self.state_14(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -246,6 +374,16 @@ impl Source {
 
         match c {
             'a' => self.state_11(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -259,6 +397,16 @@ impl Source {
 
         match c {
             't' => self.state_12(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -272,6 +420,16 @@ impl Source {
 
         match c {
             'e' => self.state_13(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -290,9 +448,23 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                c if c.is_whitespace() => {
+                    self.token = Some(Token {
+                        token: self.scanned_characters.clone(),
+                        symbol_type: SymbolType::Identifier,
+                        line_number: self.line_number,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -301,6 +473,16 @@ impl Source {
 
         match c {
             't' => self.state_15(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -319,9 +501,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -330,6 +519,16 @@ impl Source {
 
         match c {
             't' => self.state_17(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -343,6 +542,16 @@ impl Source {
 
         match c {
             'e' => self.state_18(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -356,6 +565,16 @@ impl Source {
 
         match c {
             'c' => self.state_19(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -369,6 +588,16 @@ impl Source {
 
         match c {
             't' => self.state_20(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -382,6 +611,16 @@ impl Source {
 
         match c {
             'e' => self.state_21(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -395,6 +634,16 @@ impl Source {
 
         match c {
             'd' => self.state_22(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -413,9 +662,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -426,6 +682,16 @@ impl Source {
             'm' => self.state_24(),
             'f' => self.state_29(),
             'n' => self.state_30(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -439,6 +705,16 @@ impl Source {
 
         match c {
             'p' => self.state_25(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -452,6 +728,16 @@ impl Source {
 
         match c {
             'o' => self.state_26(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -465,6 +751,16 @@ impl Source {
 
         match c {
             'r' => self.state_27(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -478,6 +774,16 @@ impl Source {
 
         match c {
             't' => self.state_28(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -496,9 +802,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -512,9 +825,23 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                c if c.is_whitespace() => {
+                    self.token = Some(Token {
+                        token: self.scanned_characters.clone(),
+                        symbol_type: SymbolType::Identifier,
+                        line_number: self.line_number,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -530,6 +857,9 @@ impl Source {
         } else {
             match c {
                 't' => self.state_31(),
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
@@ -549,9 +879,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -561,6 +898,16 @@ impl Source {
         match c {
             'b' => self.state_33(),
             'n' => self.state_40(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -574,6 +921,16 @@ impl Source {
 
         match c {
             's' => self.state_34(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -587,6 +944,16 @@ impl Source {
 
         match c {
             't' => self.state_35(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -600,6 +967,16 @@ impl Source {
 
         match c {
             'r' => self.state_36(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -613,6 +990,16 @@ impl Source {
 
         match c {
             'a' => self.state_37(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -626,6 +1013,16 @@ impl Source {
 
         match c {
             'c' => self.state_38(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -639,6 +1036,16 @@ impl Source {
 
         match c {
             't' => self.state_39(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -657,9 +1064,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -668,6 +1082,16 @@ impl Source {
 
         match c {
             'd' => self.state_41(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -686,9 +1110,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -698,6 +1129,16 @@ impl Source {
         match c {
             'i' => self.state_43(),
             'a' => self.state_47(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -711,6 +1152,16 @@ impl Source {
 
         match c {
             'n' => self.state_44(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -724,6 +1175,16 @@ impl Source {
 
         match c {
             'a' => self.state_45(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -737,6 +1198,16 @@ impl Source {
 
         match c {
             'l' => self.state_46(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -755,9 +1226,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -766,6 +1244,16 @@ impl Source {
 
         match c {
             'l' => self.state_48(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -779,6 +1267,16 @@ impl Source {
 
         match c {
             's' => self.state_49(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -792,6 +1290,16 @@ impl Source {
 
         match c {
             'e' => self.state_50(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -810,9 +1318,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -821,6 +1336,16 @@ impl Source {
 
         match c {
             'e' => self.state_52(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -834,6 +1359,16 @@ impl Source {
 
         match c {
             'a' => self.state_53(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -847,6 +1382,16 @@ impl Source {
 
         match c {
             'l' => self.state_54(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -860,6 +1405,16 @@ impl Source {
 
         match c {
             'e' => self.state_55(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -873,6 +1428,16 @@ impl Source {
 
         match c {
             'd' => self.state_56(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -891,9 +1456,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -902,6 +1474,16 @@ impl Source {
 
         match c {
             'o' => self.state_58(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -915,6 +1497,16 @@ impl Source {
 
         match c {
             'o' => self.state_59(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -928,6 +1520,16 @@ impl Source {
 
         match c {
             'l' => self.state_60(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -946,9 +1548,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -958,6 +1567,16 @@ impl Source {
         match c {
             'l' => self.state_62(),
             'a' => self.state_66(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -971,6 +1590,16 @@ impl Source {
 
         match c {
             'a' => self.state_63(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -984,6 +1613,16 @@ impl Source {
 
         match c {
             's' => self.state_64(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -997,6 +1636,16 @@ impl Source {
 
         match c {
             's' => self.state_65(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1015,9 +1664,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1026,6 +1682,16 @@ impl Source {
 
         match c {
             's' => self.state_67(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1039,6 +1705,16 @@ impl Source {
 
         match c {
             'e' => self.state_68(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1057,9 +1733,23 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                c if c.is_whitespace() => {
+                    self.token = Some(Token {
+                        token: self.scanned_characters.clone(),
+                        symbol_type: SymbolType::Identifier,
+                        line_number: self.line_number,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1068,6 +1758,16 @@ impl Source {
 
         match c {
             'e' => self.state_70(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1081,6 +1781,16 @@ impl Source {
 
         match c {
             'f' => self.state_71(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1099,9 +1809,23 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                c if c.is_whitespace() => {
+                    self.token = Some(Token {
+                        token: self.scanned_characters.clone(),
+                        symbol_type: SymbolType::Identifier,
+                        line_number: self.line_number,
+                    })
+                }
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1110,6 +1834,16 @@ impl Source {
 
         match c {
             'l' => self.state_73(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1123,6 +1857,16 @@ impl Source {
 
         match c {
             's' => self.state_74(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1136,6 +1880,16 @@ impl Source {
 
         match c {
             'e' => self.state_75(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1154,21 +1908,36 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
     fn state_76(&mut self) {
         let c = self.read_character();
 
-        match c {
-            '=' => self.state_77(),
-            _ => {
-                self.error = Some(Error {
-                    error_type: ErrorType::InvalidSymbol,
-                })
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "=".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            match c {
+                '>' => self.state_77(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
             }
         }
     }
@@ -1178,7 +1947,7 @@ impl Source {
 
         if c.is_whitespace() {
             self.token = Some(Token {
-                token: ">=".to_string(),
+                token: "=>".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
             });
@@ -1223,6 +1992,16 @@ impl Source {
 
         match c {
             'o' => self.state_81(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1236,6 +2015,16 @@ impl Source {
 
         match c {
             't' => self.state_82(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1254,9 +2043,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1266,6 +2062,16 @@ impl Source {
         match c {
             'r' => self.state_84(),
             'b' => self.state_85(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1284,9 +2090,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1295,6 +2108,16 @@ impl Source {
 
         match c {
             'j' => self.state_86(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1308,6 +2131,16 @@ impl Source {
 
         match c {
             'e' => self.state_87(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1321,6 +2154,16 @@ impl Source {
 
         match c {
             'c' => self.state_88(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1334,6 +2177,16 @@ impl Source {
 
         match c {
             't' => self.state_89(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1352,9 +2205,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1363,6 +2223,16 @@ impl Source {
 
         match c {
             'e' => self.state_91(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1377,6 +2247,16 @@ impl Source {
         match c {
             't' => self.state_92(),
             'a' => self.state_96(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1390,6 +2270,16 @@ impl Source {
 
         match c {
             'u' => self.state_93(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1403,6 +2293,16 @@ impl Source {
 
         match c {
             'r' => self.state_94(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1416,6 +2316,16 @@ impl Source {
 
         match c {
             'n' => self.state_95(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1434,9 +2344,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            })
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1445,6 +2362,16 @@ impl Source {
 
         match c {
             'l' => self.state_97(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1463,9 +2390,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1474,6 +2408,16 @@ impl Source {
 
         match c {
             'r' => self.state_99(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1487,6 +2431,16 @@ impl Source {
 
         match c {
             'u' => self.state_100(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1500,6 +2454,16 @@ impl Source {
 
         match c {
             'e' => self.state_101(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1518,9 +2482,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1529,6 +2500,16 @@ impl Source {
 
         match c {
             'a' => self.state_103(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1542,6 +2523,16 @@ impl Source {
 
         match c {
             'l' => self.state_104(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1560,9 +2551,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1571,6 +2569,16 @@ impl Source {
 
         match c {
             'h' => self.state_106(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1584,6 +2592,16 @@ impl Source {
 
         match c {
             'i' => self.state_107(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1597,6 +2615,16 @@ impl Source {
 
         match c {
             'l' => self.state_108(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1610,6 +2638,16 @@ impl Source {
 
         match c {
             'e' => self.state_109(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
+            '.' => self.state_114(),
+            '0'..='9' => self.state_114(),
+            c if c.is_whitespace() => {
+                self.token = Some(Token {
+                    token: self.scanned_characters.clone(),
+                    symbol_type: SymbolType::Identifier,
+                    line_number: self.line_number,
+                })
+            }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
@@ -1628,9 +2666,16 @@ impl Source {
                 line_number: self.line_number,
             });
         } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '.' => self.state_114(),
+                '0'..='9' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
+            }
         }
     }
 
@@ -1729,6 +2774,7 @@ impl Source {
     // This state is reserved for the identifiers partition of the DFA.
     fn state_114(&mut self) {
         let c = self.read_character();
+        eprintln!("state 114 entered");
 
         if c.is_whitespace() {
             self.token = Some(Token {
@@ -1739,7 +2785,7 @@ impl Source {
         }
 
         match c {
-            'A'..='z' => self.state_114(),
+            c if c.is_ascii_alphabetic() => self.state_114(),
             '0'..='9' => self.state_114(),
             '.' => self.state_114(),
             _ => {
@@ -1749,14 +2795,197 @@ impl Source {
             }
         }
     }
+
+    // These states are reserved for the special symbol portions of the DFA.
+    fn state_115(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "#".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_116(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: ";".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_117(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "{".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_118(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "}".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_119(&mut self) {
+        // let c = self.read_character();
+
+        // if c.is_whitespace() {
+        self.token = Some(Token {
+            token: "(".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
+        // } else {
+        //     self.error = Some(Error {
+        //         error_type: ErrorType::InvalidSymbol,
+        //     });
+        // }
+    }
+
+    fn state_120(&mut self) {
+        // let c = self.read_character();
+
+        // if c.is_whitespace() {
+        self.token = Some(Token {
+            token: ")".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
+        // } else {
+        //     self.error = Some(Error {
+        //         error_type: ErrorType::InvalidSymbol,
+        //     });
+        // }
+    }
+
+    fn state_121(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: ":".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_122(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: ",".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_123(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "+".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_124(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "*".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
+
+    fn state_125(&mut self) {
+        let c = self.read_character();
+
+        if c.is_whitespace() {
+            self.token = Some(Token {
+                token: "@".to_string(),
+                symbol_type: SymbolType::SpecialSymbol,
+                line_number: self.line_number,
+            });
+        } else {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+            });
+        }
+    }
 }
 
 // Keeping track of all of the special symbols in our language.
 const SPECIAL_SYMBOLS: [char; 12] = ['#', ';', '{', '}', '(', ')', ':', ',', '=', '+', '*', '@'];
+const ADJACENT_SPECIAL_SYMBOLS: [char; 7] = [';', '(', ')', ':', ',', '@', '#'];
 
-// Given a character, determines if the symbol is a special symbol.
-pub fn is_special_symbol(c: char) -> bool {
+// Given a character, determine if the symbol is a special symbol.
+fn is_special_symbol(c: char) -> bool {
     SPECIAL_SYMBOLS.contains(&c)
+}
+
+// Given a character, determine if the symbol is a special symbol that is allowed to be adjacent to other symbols.
+fn is_adjacent_special_symbol(c: char) -> bool {
+    ADJACENT_SPECIAL_SYMBOLS.contains(&c)
 }
 
 #[cfg(test)]
@@ -2108,14 +3337,14 @@ mod scanner_keyword_tests {
 
     #[test]
     fn test_geq() {
-        let src_str = "x >= 5".to_string();
+        let src_str = "x => 5".to_string();
         let mut src = Source::new(src_str);
 
         src.scan();
         let tkn = src.scan().unwrap();
 
         let expected = &Some(Token {
-            token: ">=".to_string(),
+            token: "=>".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
         })
@@ -2229,7 +3458,7 @@ mod scanner_keyword_tests {
     // Test that the scanner recognizes an invalid keyword and throws the proper error.
     #[test]
     fn test_invalid_keyword() {
-        let src_str = "this_is_not_a_valid_keyword".to_string();
+        let src_str = "this_is_not_a_valid_keyword\n".to_string();
         let mut src = Source::new(src_str);
 
         src.scan();
@@ -2361,8 +3590,336 @@ mod scanner_id_tests {
         let mut src = Source::new(src_str);
 
         let expected: &Token = &Some(Token {
-            token: "x;".to_string(),
+            token: "x".to_string(),
             symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_a() {
+        let src_str = "a\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "a".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_aa() {
+        let src_str = "aa\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "aa".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_aa_with_semicolon() {
+        let src_str = "aa;\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "aa".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_print_but_without_t() {
+        let src_str = "prin\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "prin".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_print_but_without_t_and_with_semicolon() {
+        let src_str = "prin;\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "prin".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_one_of_dr_kim_crazy_identifiers() {
+        let src_str = "b.c...67\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "b.c...67".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_one_of_dr_kim_crazy_identifiers_with_semicolon() {
+        let src_str = "b.c...67;\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "b.c...67".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+}
+
+#[cfg(test)]
+mod scanner_special_symbol_tests {
+    use crate::scanner::*;
+
+    #[test]
+    fn test_equal_sign() {
+        let src_str = "=\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "=".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_pound_sign() {
+        let src_str = "#\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "#".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_semicolon() {
+        let src_str = ";\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: ";".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_left_bracket() {
+        let src_str = "{\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "{".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_right_bracket() {
+        let src_str = "}\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "}".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_left_parenthesis() {
+        let src_str = "(\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "(".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_right_parenthesis() {
+        let src_str = ")\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: ")".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_colon() {
+        let src_str = ":\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: ":".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_comma() {
+        let src_str = ",\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: ",".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_plus_sign() {
+        let src_str = "+\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "+".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_star() {
+        let src_str = "*\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "*".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_at_sign() {
+        let src_str = "@\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "@".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
         })
         .unwrap();

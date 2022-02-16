@@ -4,7 +4,6 @@
 pub enum ErrorType {
     InvalidSymbol,
     ConstantHasTooManyPeriods,
-    AllOthers,
     // TODO: add more as you come up with them
 }
 
