@@ -18,3 +18,7 @@ test:
 
 clean:
 	cargo clean
+
+loc: clean
+	cloc .
+
