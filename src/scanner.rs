@@ -13,6 +13,7 @@ pub struct Source {
     pub(crate) token: Option<Token>,
     pub(crate) extra_token: Option<Token>,
     pub(crate) error: Option<Error>,
+    extra_token_sent: bool,
 }
 
 impl Source {
@@ -26,6 +27,7 @@ impl Source {
             token: None,
             extra_token: None,
             error: None,
+            extra_token_sent: false,
         }
     }
 
@@ -72,9 +74,10 @@ impl Source {
             return None;
         }
 
-        if self.extra_token.is_some() {
+        if self.extra_token.is_some() && !self.extra_token_sent {
             println!("The extra token flag is marked.");
             // Return the extra token in here
+            self.extra_token_sent = true;
             return self.extra_token.as_ref();
         }
 
@@ -83,6 +86,7 @@ impl Source {
         self.error = None;
         self.token = None;
         self.extra_token = None;
+        self.extra_token_sent = false;
 
         self.initial_state();
 
@@ -2974,14 +2978,15 @@ impl Source {
     }
 }
 
+// FIXME: you might want to delete these lines of code.
 // Keeping track of all of the special symbols in our language.
-const SPECIAL_SYMBOLS: [char; 12] = ['#', ';', '{', '}', '(', ')', ':', ',', '=', '+', '*', '@'];
+// const SPECIAL_SYMBOLS: [char; 12] = ['#', ';', '{', '}', '(', ')', ':', ',', '=', '+', '*', '@'];
 const ADJACENT_SPECIAL_SYMBOLS: [char; 7] = [';', '(', ')', ':', ',', '@', '#'];
 
 // Given a character, determine if the symbol is a special symbol.
-fn is_special_symbol(c: char) -> bool {
-    SPECIAL_SYMBOLS.contains(&c)
-}
+// fn is_special_symbol(c: char) -> bool {
+//     SPECIAL_SYMBOLS.contains(&c)
+// }
 
 // Given a character, determine if the symbol is a special symbol that is allowed to be adjacent to other symbols.
 fn is_adjacent_special_symbol(c: char) -> bool {
