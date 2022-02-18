@@ -12,7 +12,7 @@ mod bookkeeper;
 mod error;
 mod scanner;
 
-use crate::bookkeeper::{convert_token_to_symbol_table_token, SymbolTable, SymbolType};
+use crate::bookkeeper::{convert_token_to_symbol_table_token, Bookkeeper, SymbolType};
 use crate::scanner::Source;
 
 fn main() {
@@ -44,7 +44,7 @@ fn main() {
     let mut src: Source = Source::new(s);
 
     //Initialize the symbol table
-    let mut symtab: SymbolTable = SymbolTable::new();
+    let mut symtab: Bookkeeper = Bookkeeper::new();
 
     while !src.is_done() {
         let tkn = src.scan();

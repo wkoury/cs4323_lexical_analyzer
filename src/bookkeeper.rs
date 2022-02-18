@@ -32,13 +32,13 @@ pub fn convert_token_to_symbol_table_token(tkn: Token) -> SymbolTableToken {
     }
 }
 
-pub struct SymbolTable {
+pub struct Bookkeeper {
     pub(crate) symbols: HashSet<SymbolTableToken>,
 }
 
-impl SymbolTable {
+impl Bookkeeper {
     pub fn new() -> Self {
-        SymbolTable {
+        Bookkeeper {
             symbols: HashSet::new(),
         }
     }
@@ -54,7 +54,7 @@ mod symbol_table_tests {
 
     #[test]
     fn test_one_entry() {
-        let mut symtab = SymbolTable::new();
+        let mut symtab = Bookkeeper::new();
         let tkn = SymbolTableToken {
             token: "test".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -70,7 +70,7 @@ mod symbol_table_tests {
 
     #[test]
     fn test_duplicate_entries() {
-        let mut symtab = SymbolTable::new();
+        let mut symtab = Bookkeeper::new();
         let tkn = SymbolTableToken {
             token: "test".to_string(),
             symbol_type: SymbolType::Identifier,
