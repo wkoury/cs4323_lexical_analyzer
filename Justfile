@@ -22,3 +22,6 @@ clean:
 loc: clean
 	cloc .
 
+flamegraph:
+	sudo cargo flamegraph --dev -- kim_example.ssc
+
