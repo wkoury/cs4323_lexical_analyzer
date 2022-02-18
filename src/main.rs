@@ -12,6 +12,7 @@ mod bookkeeper;
 mod error;
 mod scanner;
 
+use crate::bookkeeper::{convert_token_to_symbol_table_token, SymbolTable, SymbolType};
 use crate::scanner::Source;
 
 fn main() {
@@ -36,18 +37,34 @@ fn main() {
     let mut s = String::new();
     match file.read_to_string(&mut s) {
         Err(why) => panic!("Couldn't read {}: {}", display, why),
-        Ok(_) => println!("{}", s),
+        Ok(_) => println!("{}\n{}", "Source program:".blue().bold(), s),
     };
 
+    // Initialize the source
     let mut src: Source = Source::new(s);
+
+    //Initialize the symbol table
+    let mut symtab: SymbolTable = SymbolTable::new();
 
     while !src.is_done() {
         let tkn = src.scan();
 
-        println!("{:?}", tkn);
+        if let Some(..) = tkn {
+            if tkn.unwrap().symbol_type == SymbolType::Constant
+                || tkn.unwrap().symbol_type == SymbolType::Identifier
+            {
+                println!("{:?}", tkn);
+                symtab.insert(convert_token_to_symbol_table_token(tkn.unwrap().clone()));
+            }
+        }
         if src.error.is_some() {
             print!("{}", "An error occurred: ".red().bold());
             println!("{:?}", src.error);
         }
+    }
+
+    println!("{}", "Symbol table contents:".blue().bold());
+    for symbol in symtab.symbols {
+        println!("{:?}", symbol);
     }
 }
