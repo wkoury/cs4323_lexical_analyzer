@@ -4243,3 +4243,221 @@ mod scanner_special_symbol_tests {
         assert_eq!(expected_tkn, tkn.unwrap());
     }
 }
+
+#[cfg(test)]
+mod bigger_scanner_tests {
+    use crate::scanner::*;
+
+    #[test]
+    fn test_some_text() {
+        let src_str = "
+        int a;
+        package b;
+        integers
+        this is a test of identifiers
+        # nothing in this line should be taken seriously
+        int c;
+        $
+        "
+        .to_string();
+        let mut src: Source = Source::new(src_str);
+
+        let mut tkn = src.scan().unwrap();
+
+        let expected: &Token = &Some(Token {
+            token: "int".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 2,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected = &Some(Token {
+            token: "a".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 2,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: ";".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 2,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "package".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 3,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "b".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 3,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: ";".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 3,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "integers".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 4,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "this".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "is".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "a".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "test".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "of".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "identifiers".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 5,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "#".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 6,
+            comment: true,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "int".to_string(),
+            symbol_type: SymbolType::Keyword,
+            line_number: 7,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: "c".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 7,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        tkn = src.scan().unwrap();
+        let expected: &Token = &Some(Token {
+            token: ";".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 7,
+            comment: false,
+        })
+        .unwrap();
+
+        assert_eq!(expected, tkn);
+
+        src.scan();
+        let expected_err: Error = Some(Error {
+            error_type: ErrorType::InvalidSymbol,
+        })
+        .unwrap();
+
+        let actual_err: Error = src.error.unwrap();
+
+        assert_eq!(expected_err, actual_err);
+    }
+}

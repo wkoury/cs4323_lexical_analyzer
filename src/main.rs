@@ -52,9 +52,7 @@ fn main() {
         if let Some(..) = tkn {
             // If we have a token of some kind, print it.
             let tkn_ref = tkn.unwrap();
-            if !tkn_ref.comment {
-                println!("{}", tkn_ref);
-            }
+            println!("{}", tkn_ref);
 
             // If the token belongs in the symbol table, add it.
             if tkn.unwrap().symbol_type == SymbolType::Constant
