@@ -50,10 +50,16 @@ fn main() {
         let tkn = src.scan();
 
         if let Some(..) = tkn {
+            // If we have a token of some kind, print it.
+            let tkn_ref = tkn.unwrap();
+            if !tkn_ref.comment {
+                println!("{}", tkn_ref);
+            }
+
+            // If the token belongs in the symbol table, add it.
             if tkn.unwrap().symbol_type == SymbolType::Constant
                 || tkn.unwrap().symbol_type == SymbolType::Identifier
             {
-                println!("{:?}", tkn);
                 symtab.insert(convert_token_to_symbol_table_token(tkn.unwrap().clone()));
             }
         }

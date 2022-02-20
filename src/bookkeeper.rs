@@ -16,6 +16,17 @@ pub struct Token {
     pub(crate) token: String,
     pub(crate) symbol_type: SymbolType,
     pub(crate) line_number: usize,
+    pub(crate) comment: bool,
+}
+
+impl std::fmt::Display for Token {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "Token: {}\t Type: {:?}\t Line: {}",
+            self.token, self.symbol_type, self.line_number
+        )
+    }
 }
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
