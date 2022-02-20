@@ -18,6 +18,8 @@ test:
 
 clean:
 	cargo clean
+	rm *.svg ; \
+	rm -rf *.out*
 
 loc: clean
 	cloc .
@@ -25,3 +27,5 @@ loc: clean
 flamegraph:
 	sudo cargo flamegraph --dev -- samples/kim_example.ssc
 
+cov:
+	cargo llvm-cov
