@@ -78,7 +78,6 @@ impl Source {
                 token: ret.to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
 
             self.index += 1;
@@ -199,7 +198,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -223,7 +221,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -247,7 +244,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -271,7 +267,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -295,7 +290,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -319,7 +313,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -338,7 +331,6 @@ impl Source {
                 token: "package".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -350,7 +342,6 @@ impl Source {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
                         line_number: self.line_number,
-                        comment: self.comment,
                     })
                 }
                 _ => {
@@ -376,7 +367,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -401,7 +391,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -425,7 +414,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -449,7 +437,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -473,7 +460,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -492,7 +478,6 @@ impl Source {
                 token: "private".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -504,7 +489,6 @@ impl Source {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
                         line_number: self.line_number,
-                        comment: self.comment,
                     })
                 }
                 _ => {
@@ -529,7 +513,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -548,7 +531,6 @@ impl Source {
                 token: "print".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -577,7 +559,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -601,7 +582,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -625,7 +605,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -649,7 +628,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -673,7 +651,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -697,7 +674,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -716,7 +692,6 @@ impl Source {
                 token: "protected".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -747,7 +722,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -771,7 +745,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -795,7 +768,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -819,7 +791,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -843,7 +814,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -862,7 +832,6 @@ impl Source {
                 token: "import".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -886,7 +855,6 @@ impl Source {
                 token: "if".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -898,7 +866,6 @@ impl Source {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
                         line_number: self.line_number,
-                        comment: self.comment,
                     })
                 }
                 _ => {
@@ -918,7 +885,6 @@ impl Source {
                 token: "in".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -943,7 +909,6 @@ impl Source {
                 token: "int".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -973,7 +938,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -997,7 +961,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1021,7 +984,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1045,7 +1007,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1069,7 +1030,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1093,7 +1053,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1117,7 +1076,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1136,7 +1094,6 @@ impl Source {
                 token: "abstract".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1165,7 +1122,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1184,7 +1140,6 @@ impl Source {
                 token: "and".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1214,7 +1169,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1238,7 +1192,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1262,7 +1215,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1286,7 +1238,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1305,7 +1256,6 @@ impl Source {
                 token: "final".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1334,7 +1284,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1358,7 +1307,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1382,7 +1330,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1401,7 +1348,6 @@ impl Source {
                 token: "false".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1430,7 +1376,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1454,7 +1399,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1478,7 +1422,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1502,7 +1445,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1526,7 +1468,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1545,7 +1486,6 @@ impl Source {
                 token: "sealed".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1574,7 +1514,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1598,7 +1537,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1622,7 +1560,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1641,7 +1578,6 @@ impl Source {
                 token: "bool".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1671,7 +1607,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1695,7 +1630,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1719,7 +1653,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1743,7 +1676,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1762,7 +1694,6 @@ impl Source {
                 token: "class".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1791,7 +1722,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1815,7 +1745,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1834,7 +1763,6 @@ impl Source {
                 token: "case".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1846,7 +1774,6 @@ impl Source {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
                         line_number: self.line_number,
-                        comment: self.comment,
                     })
                 }
                 _ => {
@@ -1871,7 +1798,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1895,7 +1821,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1914,7 +1839,6 @@ impl Source {
                 token: "def".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -1926,7 +1850,6 @@ impl Source {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
                         line_number: self.line_number,
-                        comment: self.comment,
                     })
                 }
                 _ => {
@@ -1951,7 +1874,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1975,7 +1897,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -1999,7 +1920,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2018,7 +1938,6 @@ impl Source {
                 token: "else".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2042,7 +1961,6 @@ impl Source {
                 token: "=".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2064,7 +1982,6 @@ impl Source {
                 token: "=>".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -2096,7 +2013,6 @@ impl Source {
                 token: "<=".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -2118,7 +2034,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2142,7 +2057,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2161,7 +2075,6 @@ impl Source {
                 token: "not".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2191,7 +2104,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2210,7 +2122,6 @@ impl Source {
                 token: "or".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2239,7 +2150,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2263,7 +2173,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2287,7 +2196,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2311,7 +2219,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2330,7 +2237,6 @@ impl Source {
                 token: "object".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2359,7 +2265,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2384,7 +2289,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2408,7 +2312,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2432,7 +2335,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2456,7 +2358,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2475,7 +2376,6 @@ impl Source {
                 token: "return".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2504,7 +2404,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2523,7 +2422,6 @@ impl Source {
                 token: "real".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2552,7 +2450,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2576,7 +2473,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2600,7 +2496,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2619,7 +2514,6 @@ impl Source {
                 token: "true".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2648,7 +2542,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2672,7 +2565,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2691,7 +2583,6 @@ impl Source {
                 token: "val".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2720,7 +2611,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2744,7 +2634,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2768,7 +2657,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2792,7 +2680,6 @@ impl Source {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
                     line_number: self.line_number,
-                    comment: self.comment,
                 })
             }
             _ => {
@@ -2811,7 +2698,6 @@ impl Source {
                 token: "while".to_string(),
                 symbol_type: SymbolType::Keyword,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2853,7 +2739,6 @@ impl Source {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2880,7 +2765,6 @@ impl Source {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2903,7 +2787,6 @@ impl Source {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             match c {
@@ -2932,7 +2815,6 @@ impl Source {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Identifier,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         }
 
@@ -2960,7 +2842,6 @@ impl Source {
                 token: "#".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -2977,7 +2858,6 @@ impl Source {
                 token: ";".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -2994,7 +2874,6 @@ impl Source {
                 token: "{".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3011,7 +2890,6 @@ impl Source {
                 token: "}".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3028,7 +2906,6 @@ impl Source {
             token: "(".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: self.line_number,
-            comment: self.comment,
         });
         // } else {
         //     self.error = Some(Error {
@@ -3045,7 +2922,6 @@ impl Source {
             token: ")".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: self.line_number,
-            comment: self.comment,
         });
         // } else {
         //     self.error = Some(Error {
@@ -3062,7 +2938,6 @@ impl Source {
                 token: ":".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3079,7 +2954,6 @@ impl Source {
                 token: ",".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3096,7 +2970,6 @@ impl Source {
                 token: "+".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3113,7 +2986,6 @@ impl Source {
                 token: "*".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3130,7 +3002,6 @@ impl Source {
                 token: "@".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-                comment: self.comment,
             });
         } else {
             self.error = Some(Error {
@@ -3177,7 +3048,6 @@ mod scanner_keyword_tests {
             token: "package".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3196,7 +3066,6 @@ mod scanner_keyword_tests {
             token: "protected".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3215,7 +3084,6 @@ mod scanner_keyword_tests {
             token: "int".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3234,7 +3102,6 @@ mod scanner_keyword_tests {
             token: "if".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3253,7 +3120,6 @@ mod scanner_keyword_tests {
             token: "in".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3272,7 +3138,6 @@ mod scanner_keyword_tests {
             token: "import".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3290,7 +3155,6 @@ mod scanner_keyword_tests {
             token: "abstract".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3308,7 +3172,6 @@ mod scanner_keyword_tests {
             token: "and".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3326,7 +3189,6 @@ mod scanner_keyword_tests {
             token: "final".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3344,7 +3206,6 @@ mod scanner_keyword_tests {
             token: "false".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3362,7 +3223,6 @@ mod scanner_keyword_tests {
             token: "sealed".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3380,7 +3240,6 @@ mod scanner_keyword_tests {
             token: "class".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3398,7 +3257,6 @@ mod scanner_keyword_tests {
             token: "object".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3416,7 +3274,6 @@ mod scanner_keyword_tests {
             token: "val".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3434,7 +3291,6 @@ mod scanner_keyword_tests {
             token: "def".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3454,7 +3310,6 @@ mod scanner_keyword_tests {
             token: "<=".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3472,7 +3327,6 @@ mod scanner_keyword_tests {
             token: "else".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3490,7 +3344,6 @@ mod scanner_keyword_tests {
             token: "while".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3508,7 +3361,6 @@ mod scanner_keyword_tests {
             token: "case".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3527,7 +3379,6 @@ mod scanner_keyword_tests {
             token: "=>".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3545,7 +3396,6 @@ mod scanner_keyword_tests {
             token: "return".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3563,7 +3413,6 @@ mod scanner_keyword_tests {
             token: "not".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3581,7 +3430,6 @@ mod scanner_keyword_tests {
             token: "true".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3599,7 +3447,6 @@ mod scanner_keyword_tests {
             token: "or".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3617,7 +3464,6 @@ mod scanner_keyword_tests {
             token: "real".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3635,7 +3481,6 @@ mod scanner_keyword_tests {
             token: "bool".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3673,7 +3518,6 @@ mod scanner_constant_tests {
             token: "0.0".to_string(),
             symbol_type: SymbolType::Constant,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3691,7 +3535,6 @@ mod scanner_constant_tests {
             token: "200.6".to_string(),
             symbol_type: SymbolType::Constant,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3709,7 +3552,6 @@ mod scanner_constant_tests {
             token: ".47".to_string(),
             symbol_type: SymbolType::Constant,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3727,7 +3569,6 @@ mod scanner_constant_tests {
             token: "00".to_string(),
             symbol_type: SymbolType::Constant,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3750,7 +3591,6 @@ mod scanner_id_tests {
             token: "x".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3768,7 +3608,6 @@ mod scanner_id_tests {
             token: "xx".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3786,7 +3625,6 @@ mod scanner_id_tests {
             token: "x".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3804,7 +3642,6 @@ mod scanner_id_tests {
             token: "a".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3822,7 +3659,6 @@ mod scanner_id_tests {
             token: "aa".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3840,7 +3676,6 @@ mod scanner_id_tests {
             token: "aa".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3858,7 +3693,6 @@ mod scanner_id_tests {
             token: "prin".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3876,7 +3710,6 @@ mod scanner_id_tests {
             token: "prin".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3894,7 +3727,6 @@ mod scanner_id_tests {
             token: "b.c...67".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3912,7 +3744,6 @@ mod scanner_id_tests {
             token: "b.c...67".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3930,7 +3761,6 @@ mod scanner_id_tests {
             token: "i".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3948,7 +3778,6 @@ mod scanner_id_tests {
             token: "i".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3966,7 +3795,6 @@ mod scanner_id_tests {
             token: "ii".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -3984,7 +3812,6 @@ mod scanner_id_tests {
             token: "ii".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4007,7 +3834,6 @@ mod scanner_special_symbol_tests {
             token: "=".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4025,7 +3851,6 @@ mod scanner_special_symbol_tests {
             token: "#".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: true,
         })
         .unwrap();
 
@@ -4043,7 +3868,6 @@ mod scanner_special_symbol_tests {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4061,7 +3885,6 @@ mod scanner_special_symbol_tests {
             token: "{".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4079,7 +3902,6 @@ mod scanner_special_symbol_tests {
             token: "}".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4097,7 +3919,6 @@ mod scanner_special_symbol_tests {
             token: "(".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4115,7 +3936,6 @@ mod scanner_special_symbol_tests {
             token: ")".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4133,7 +3953,6 @@ mod scanner_special_symbol_tests {
             token: ":".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4151,7 +3970,6 @@ mod scanner_special_symbol_tests {
             token: ",".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4169,7 +3987,6 @@ mod scanner_special_symbol_tests {
             token: "+".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4187,7 +4004,6 @@ mod scanner_special_symbol_tests {
             token: "*".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4205,7 +4021,6 @@ mod scanner_special_symbol_tests {
             token: "@".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
-            comment: false,
         })
         .unwrap();
 
@@ -4228,7 +4043,7 @@ mod scanner_special_symbol_tests {
         assert_eq!(expected_comment, actual_comment);
 
         let mut tkn = src.scan();
-        while tkn.is_none() || tkn.unwrap().comment {
+        while tkn.is_none() {
             tkn = src.scan();
         }
 
@@ -4236,7 +4051,6 @@ mod scanner_special_symbol_tests {
             token: "int".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 2,
-            comment: false,
         })
         .unwrap();
 
@@ -4268,7 +4082,6 @@ mod bigger_scanner_tests {
             token: "int".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 2,
-            comment: false,
         })
         .unwrap();
 
@@ -4279,7 +4092,6 @@ mod bigger_scanner_tests {
             token: "a".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 2,
-            comment: false,
         })
         .unwrap();
 
@@ -4290,7 +4102,6 @@ mod bigger_scanner_tests {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 2,
-            comment: false,
         })
         .unwrap();
 
@@ -4301,7 +4112,6 @@ mod bigger_scanner_tests {
             token: "package".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 3,
-            comment: false,
         })
         .unwrap();
 
@@ -4312,7 +4122,6 @@ mod bigger_scanner_tests {
             token: "b".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 3,
-            comment: false,
         })
         .unwrap();
 
@@ -4323,7 +4132,6 @@ mod bigger_scanner_tests {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 3,
-            comment: false,
         })
         .unwrap();
 
@@ -4334,7 +4142,6 @@ mod bigger_scanner_tests {
             token: "integers".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 4,
-            comment: false,
         })
         .unwrap();
 
@@ -4345,7 +4152,6 @@ mod bigger_scanner_tests {
             token: "this".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4356,7 +4162,6 @@ mod bigger_scanner_tests {
             token: "is".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4367,7 +4172,6 @@ mod bigger_scanner_tests {
             token: "a".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4378,7 +4182,6 @@ mod bigger_scanner_tests {
             token: "test".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4389,7 +4192,6 @@ mod bigger_scanner_tests {
             token: "of".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4400,7 +4202,6 @@ mod bigger_scanner_tests {
             token: "identifiers".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 5,
-            comment: false,
         })
         .unwrap();
 
@@ -4411,7 +4212,6 @@ mod bigger_scanner_tests {
             token: "#".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 6,
-            comment: true,
         })
         .unwrap();
 
@@ -4422,7 +4222,6 @@ mod bigger_scanner_tests {
             token: "int".to_string(),
             symbol_type: SymbolType::Keyword,
             line_number: 7,
-            comment: false,
         })
         .unwrap();
 
@@ -4433,7 +4232,6 @@ mod bigger_scanner_tests {
             token: "c".to_string(),
             symbol_type: SymbolType::Identifier,
             line_number: 7,
-            comment: false,
         })
         .unwrap();
 
@@ -4444,7 +4242,6 @@ mod bigger_scanner_tests {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: 7,
-            comment: false,
         })
         .unwrap();
 
