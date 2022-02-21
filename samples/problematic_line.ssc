@@ -1,0 +1,2 @@
+
+while (not ( true or false)) return (47 * (x + 25)); }
