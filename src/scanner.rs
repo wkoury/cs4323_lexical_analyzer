@@ -197,7 +197,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -220,7 +220,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -243,7 +243,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -266,7 +266,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -289,7 +289,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -312,7 +312,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -330,7 +330,7 @@ impl Source {
     fn state_7(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "package".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -341,7 +341,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '.' => self.state_114(),
                 '0'..='9' => self.state_114(),
-                c if c.is_whitespace() => {
+                c if is_separator(c) => {
                     self.token = Some(Token {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
@@ -366,7 +366,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -390,7 +390,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -413,7 +413,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -436,7 +436,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -459,7 +459,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -477,7 +477,7 @@ impl Source {
     fn state_13(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "private".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -488,7 +488,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '.' => self.state_114(),
                 '0'..='9' => self.state_114(),
-                c if c.is_whitespace() => {
+                c if is_separator(c) => {
                     self.token = Some(Token {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
@@ -512,7 +512,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -530,7 +530,7 @@ impl Source {
     fn state_15(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "print".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -558,7 +558,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -581,7 +581,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -604,7 +604,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -627,7 +627,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -650,7 +650,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -673,7 +673,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -691,7 +691,7 @@ impl Source {
     fn state_22(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "protected".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -721,7 +721,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -744,7 +744,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -767,7 +767,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -790,7 +790,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -813,7 +813,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -831,7 +831,7 @@ impl Source {
     fn state_28(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "import".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -854,7 +854,7 @@ impl Source {
     fn state_29(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "if".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -865,7 +865,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '.' => self.state_114(),
                 '0'..='9' => self.state_114(),
-                c if c.is_whitespace() => {
+                c if is_separator(c) => {
                     self.token = Some(Token {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
@@ -884,7 +884,7 @@ impl Source {
     fn state_30(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "in".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -908,7 +908,7 @@ impl Source {
     fn state_31(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "int".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -937,7 +937,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -960,7 +960,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -983,7 +983,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1006,7 +1006,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1029,7 +1029,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1052,7 +1052,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1075,7 +1075,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1093,7 +1093,7 @@ impl Source {
     fn state_39(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "abstract".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1121,7 +1121,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1139,7 +1139,7 @@ impl Source {
     fn state_41(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "and".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1168,7 +1168,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1191,7 +1191,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1214,7 +1214,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1237,7 +1237,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1255,7 +1255,7 @@ impl Source {
     fn state_46(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "final".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1283,7 +1283,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1306,7 +1306,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1329,7 +1329,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1347,7 +1347,7 @@ impl Source {
     fn state_50(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "false".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1375,7 +1375,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1398,7 +1398,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1421,7 +1421,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1444,7 +1444,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1467,7 +1467,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1485,7 +1485,7 @@ impl Source {
     fn state_56(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "sealed".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1513,7 +1513,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1536,7 +1536,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1559,7 +1559,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1577,7 +1577,7 @@ impl Source {
     fn state_60(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "bool".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1606,7 +1606,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1629,7 +1629,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1652,7 +1652,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1675,7 +1675,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1693,7 +1693,7 @@ impl Source {
     fn state_65(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "class".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1721,7 +1721,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1744,7 +1744,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1762,7 +1762,7 @@ impl Source {
     fn state_68(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "case".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1773,7 +1773,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '.' => self.state_114(),
                 '0'..='9' => self.state_114(),
-                c if c.is_whitespace() => {
+                c if is_separator(c) => {
                     self.token = Some(Token {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
@@ -1797,7 +1797,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1820,7 +1820,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1838,7 +1838,7 @@ impl Source {
     fn state_71(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "def".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1849,7 +1849,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '.' => self.state_114(),
                 '0'..='9' => self.state_114(),
-                c if c.is_whitespace() => {
+                c if is_separator(c) => {
                     self.token = Some(Token {
                         token: self.scanned_characters.clone(),
                         symbol_type: SymbolType::Identifier,
@@ -1873,7 +1873,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1896,7 +1896,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1919,7 +1919,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -1937,7 +1937,7 @@ impl Source {
     fn state_75(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "else".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -1960,7 +1960,7 @@ impl Source {
     fn state_76(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "=".to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
@@ -1981,7 +1981,7 @@ impl Source {
     fn state_77(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "=>".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2014,7 +2014,7 @@ impl Source {
     fn state_79(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "<=".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2035,7 +2035,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2058,7 +2058,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2076,7 +2076,7 @@ impl Source {
     fn state_82(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "not".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2105,7 +2105,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2123,7 +2123,7 @@ impl Source {
     fn state_84(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "or".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2151,7 +2151,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2174,7 +2174,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2197,7 +2197,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2220,7 +2220,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2238,7 +2238,7 @@ impl Source {
     fn state_89(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "object".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2266,7 +2266,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2290,7 +2290,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2313,7 +2313,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2336,7 +2336,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2359,7 +2359,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2377,7 +2377,7 @@ impl Source {
     fn state_95(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "return".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2405,7 +2405,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2423,7 +2423,7 @@ impl Source {
     fn state_97(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "real".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2451,7 +2451,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2474,7 +2474,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2497,7 +2497,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2515,7 +2515,7 @@ impl Source {
     fn state_101(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "true".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2543,7 +2543,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2566,7 +2566,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2584,7 +2584,7 @@ impl Source {
     fn state_104(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "val".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2612,7 +2612,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2635,7 +2635,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2658,7 +2658,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2681,7 +2681,7 @@ impl Source {
             c if c.is_ascii_alphabetic() => self.state_114(),
             '.' => self.state_114(),
             '0'..='9' => self.state_114(),
-            c if c.is_whitespace() => {
+            c if is_separator(c) => {
                 self.token = Some(Token {
                     token: self.scanned_characters.clone(),
                     symbol_type: SymbolType::Identifier,
@@ -2699,7 +2699,7 @@ impl Source {
     fn state_109(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: "while".to_string(),
                 symbol_type: SymbolType::Keyword,
@@ -2740,7 +2740,7 @@ impl Source {
     fn state_111(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
@@ -2766,7 +2766,7 @@ impl Source {
     fn state_112(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
@@ -2788,7 +2788,7 @@ impl Source {
     fn state_113(&mut self) {
         let c = self.read_character();
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Constant,
@@ -2818,7 +2818,7 @@ impl Source {
             eprintln!("state 114 entered");
         }
 
-        if c.is_whitespace() {
+        if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
                 symbol_type: SymbolType::Identifier,
@@ -2941,7 +2941,7 @@ fn is_special_symbol(c: char) -> bool {
     SPECIAL_SYMBOLS.contains(&c)
 }
 
-fn is_token_separator(c: char) -> bool {
+fn is_separator(c: char) -> bool {
     c.is_whitespace() || is_special_symbol(c)
 }
 
