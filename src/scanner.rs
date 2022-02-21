@@ -2941,6 +2941,10 @@ fn is_special_symbol(c: char) -> bool {
     SPECIAL_SYMBOLS.contains(&c)
 }
 
+fn is_token_separator(c: char) -> bool {
+    c.is_whitespace() || is_special_symbol(c)
+}
+
 // A NOTE: EVERYTHING BELOW THIS IS NOT PART OF THE DFA. THESE ARE ALL UNIT TESTS AND ARE NOT PERTINENT TO THE GRADING OF THIS PROGRAM.
 
 #[cfg(test)]
@@ -3666,6 +3670,45 @@ mod scanner_id_tests {
         let expected: &Token = &Some(Token {
             token: "b.c...67".to_string(),
             symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_one_of_dr_kim_crazy_identifiers_with_parentheses() {
+        let src_str = "b.c...67()\n".to_string();
+        let mut src = Source::new(src_str);
+
+        let expected: &Token = &Some(Token {
+            token: "b.c...67".to_string(),
+            symbol_type: SymbolType::Identifier,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+
+        let expected: &Token = &Some(Token {
+            token: "(".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: 1,
+        })
+        .unwrap();
+
+        let actual: &Token = src.scan().unwrap();
+
+        assert_eq!(expected, actual);
+
+        let expected: &Token = &Some(Token {
+            token: ")".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
             line_number: 1,
         })
         .unwrap();
