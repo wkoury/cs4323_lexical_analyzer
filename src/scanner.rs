@@ -5,7 +5,7 @@ use std::collections::VecDeque;
 use crate::bookkeeper::{SymbolType, Token};
 use crate::error::{Error, ErrorType};
 
-const DEBUG: bool = true;
+const DEBUG: bool = false;
 
 // A struct to represent the scanner, keeping track of where the character is consumed, among other things.
 #[derive(Clone, Debug)]
@@ -66,15 +66,6 @@ impl Source {
 
             // Make an exception for leq (<=)
             if ret == '=' && self.source.chars().nth(self.index - 1).unwrap() == '<' {
-                self.index += 1;
-                self.scanned_characters.push(ret);
-                return ret;
-            }
-
-            // Don't do this for 2 special symbols in a row.
-            if !self.scanned_characters.is_empty()
-                && is_special_symbol(self.source.chars().nth(self.index - 1).unwrap())
-            {
                 self.index += 1;
                 self.scanned_characters.push(ret);
                 return ret;
@@ -2848,183 +2839,96 @@ impl Source {
     }
 
     // These states are reserved for the special symbol portions of the DFA.
+    // Since special symbols can also be considered token separators, we do not need to worry about checking for whitespace after the symbol.
     fn state_115(&mut self) {
         // Any time, no matter what, that we encounter the pound sign, we should set the comment flag to true.
         self.comment = true;
 
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "#".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "#".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_116(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: ";".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: ";".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_117(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "{".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "{".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_118(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "}".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "}".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_119(&mut self) {
-        // let c = self.read_character();
-
-        // if c.is_whitespace() {
         self.token = Some(Token {
             token: "(".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: self.line_number,
         });
-        // } else {
-        //     self.error = Some(Error {
-        //         error_type: ErrorType::InvalidSymbol,
-        //     });
-        // }
     }
 
     fn state_120(&mut self) {
-        // let c = self.read_character();
-
-        // if c.is_whitespace() {
         self.token = Some(Token {
             token: ")".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
             line_number: self.line_number,
         });
-        // } else {
-        //     self.error = Some(Error {
-        //         error_type: ErrorType::InvalidSymbol,
-        //     });
-        // }
     }
 
     fn state_121(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: ":".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: ":".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_122(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: ",".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: ",".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_123(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "+".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "+".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_124(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "*".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "*".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 
     fn state_125(&mut self) {
-        let c = self.read_character();
-
-        if c.is_whitespace() {
-            self.token = Some(Token {
-                token: "@".to_string(),
-                symbol_type: SymbolType::SpecialSymbol,
-                line_number: self.line_number,
-            });
-        } else {
-            self.error = Some(Error {
-                error_type: ErrorType::InvalidSymbol,
-            });
-        }
+        self.token = Some(Token {
+            token: "@".to_string(),
+            symbol_type: SymbolType::SpecialSymbol,
+            line_number: self.line_number,
+        });
     }
 }
 
