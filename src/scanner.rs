@@ -1,7 +1,11 @@
 #![warn(clippy::all)]
 
+use std::collections::VecDeque;
+
 use crate::bookkeeper::{SymbolType, Token};
 use crate::error::{Error, ErrorType};
+
+const DEBUG: bool = true;
 
 // A struct to represent the scanner, keeping track of where the character is consumed, among other things.
 #[derive(Clone, Debug)]
@@ -11,9 +15,8 @@ pub struct Source {
     line_number: usize,
     scanned_characters: String,
     pub(crate) token: Option<Token>,
-    pub(crate) extra_token: Option<Token>,
+    pub(crate) extra_tokens: VecDeque<Option<Token>>,
     pub(crate) error: Option<Error>,
-    extra_token_sent: bool,
     comment: bool,
 }
 
@@ -26,15 +29,16 @@ impl Source {
             line_number: 1,
             scanned_characters: "".to_string(),
             token: None,
-            extra_token: None,
+            extra_tokens: VecDeque::<Option<Token>>::new(),
             error: None,
-            extra_token_sent: false,
             comment: false,
         }
     }
 
     fn read_character(&mut self) -> char {
-        eprintln!("self.index = {}", self.index);
+        if DEBUG {
+            eprintln!("self.index = {}", self.index);
+        }
         let ret: char = self.source.chars().nth(self.index).unwrap();
         // Increment line number if we encountered a newline on the last read
         if self.index != 0 && self.source.chars().nth(self.index - 1).unwrap() == '\n' {
@@ -52,11 +56,13 @@ impl Source {
         // Handle special symbols that are attached to a previous token.
         // We want to do this if we encounter a special symbol, and the previous character to that special symbol is not whitespace.
         if is_special_symbol(ret) && !self.scanned_characters.is_empty() {
-            eprintln!("Special symbol encountered: {}", ret);
-            eprintln!(
-                "The previous character is: {}",
-                self.source.chars().nth(self.index - 1).unwrap()
-            );
+            if DEBUG {
+                eprintln!("Special symbol encountered: {}", ret);
+                eprintln!(
+                    "The previous character is: {}",
+                    self.source.chars().nth(self.index - 1).unwrap()
+                );
+            }
 
             // Make an exception for leq (<=)
             if ret == '=' && self.source.chars().nth(self.index - 1).unwrap() == '<' {
@@ -74,11 +80,11 @@ impl Source {
                 return ret;
             }
 
-            self.extra_token = Some(Token {
+            self.extra_tokens.push_back(Some(Token {
                 token: ret.to_string(),
                 symbol_type: SymbolType::SpecialSymbol,
                 line_number: self.line_number,
-            });
+            }));
 
             self.index += 1;
             return self.read_character();
@@ -92,7 +98,9 @@ impl Source {
         // Increment the index
         self.index += 1;
 
-        eprintln!("read character {} from the source", ret);
+        if DEBUG {
+            eprintln!("read character {} from the source", ret);
+        }
 
         ret
     }
@@ -104,11 +112,13 @@ impl Source {
 
     // Start moving along the DFA.
     pub fn scan(&mut self) -> Option<&Token> {
-        if self.extra_token.is_some() && !self.extra_token_sent {
-            eprintln!("The extra token flag is marked.");
-            // Return the extra token in here
-            self.extra_token_sent = true;
-            return self.extra_token.as_ref();
+        if !self.extra_tokens.is_empty() {
+            if DEBUG {
+                eprintln!("The extra token flag is marked.");
+            }
+            // Pop the queue to return the token.
+            self.token = self.extra_tokens.pop_front().unwrap();
+            return self.token.as_ref();
         }
 
         if self.is_done() {
@@ -119,8 +129,6 @@ impl Source {
         self.scanned_characters = "".to_string();
         self.error = None;
         self.token = None;
-        self.extra_token = None;
-        self.extra_token_sent = false;
 
         self.initial_state();
 
@@ -129,12 +137,17 @@ impl Source {
 
     // Start another iteration of the DFA.
     fn initial_state(&mut self) {
-        eprintln!("entered initial state");
+        if DEBUG {
+            eprintln!("entered initial state");
+        }
 
         let mut c = self.read_character();
 
         while c.is_whitespace() {
-            eprintln!("found whitespace");
+            if DEBUG {
+                eprintln!("found whitespace");
+            }
+
             if !self.is_done() {
                 c = self.read_character();
             } else {
@@ -1993,7 +2006,9 @@ impl Source {
     fn state_78(&mut self) {
         let c = self.read_character();
 
-        eprintln!("enter state_78");
+        if DEBUG {
+            eprintln!("enter state_78");
+        }
 
         match c {
             '=' => self.state_79(),
@@ -2808,7 +2823,9 @@ impl Source {
     // This state is reserved for the identifiers partition of the DFA.
     fn state_114(&mut self) {
         let c = self.read_character();
-        eprintln!("state 114 entered");
+        if DEBUG {
+            eprintln!("state 114 entered");
+        }
 
         if c.is_whitespace() {
             self.token = Some(Token {
@@ -4034,9 +4051,12 @@ mod scanner_special_symbol_tests {
         let src_str = "int a # this is a comment\nint b".to_string();
         let mut src = Source::new(src_str);
 
-        eprintln!("{:?}", src.scan().unwrap());
-        eprintln!("{:?}", src.scan().unwrap());
-        eprintln!("{:?}", src.scan().unwrap());
+        if DEBUG {
+            eprintln!("{:?}", src.scan().unwrap());
+            eprintln!("{:?}", src.scan().unwrap());
+            eprintln!("{:?}", src.scan().unwrap());
+        }
+
         let expected_comment: bool = true;
         let actual_comment = src.comment;
 

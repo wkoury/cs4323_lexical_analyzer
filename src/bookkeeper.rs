@@ -34,6 +34,12 @@ pub struct SymbolTableToken {
     pub(crate) symbol_type: SymbolType,
 }
 
+impl std::fmt::Display for SymbolTableToken {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Token: {}\t Type: {:?}", self.token, self.symbol_type)
+    }
+}
+
 // Given a Token, return a SymbolTableToken.
 pub fn convert_token_to_symbol_table_token(tkn: Token) -> SymbolTableToken {
     SymbolTableToken {

@@ -69,6 +69,6 @@ fn main() {
 
     println!("{}", "Symbol table contents:".blue().bold());
     for symbol in symtab.symbols {
-        println!("{:?}", symbol);
+        println!("{}", symbol);
     }
 }
