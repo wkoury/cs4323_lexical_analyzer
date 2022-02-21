@@ -3503,6 +3503,23 @@ mod scanner_constant_tests {
 
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    fn test_too_many_periods() {
+        let src_str = "25.2.5\n".to_string();
+        let mut src = Source::new(src_str);
+
+        src.scan();
+
+        let expected_error: Error = Some(Error {
+            error_type: ErrorType::ConstantHasTooManyPeriods,
+        })
+        .unwrap();
+
+        let actual_error: Error = src.error.unwrap();
+
+        assert_eq!(expected_error, actual_error);
+    }
 }
 
 #[cfg(test)]
