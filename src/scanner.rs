@@ -102,18 +102,18 @@ impl Source {
     }
 
     // Start moving along the DFA.
-    pub fn scan(&mut self) -> Option<&Token> {
+    pub fn scan(&mut self) -> (Option<&Token>, Option<&Error>) {
         if !self.extra_tokens.is_empty() {
             if DEBUG {
                 eprintln!("The extra token flag is marked.");
             }
             // Pop the queue to return the token.
             self.token = self.extra_tokens.pop_front().unwrap();
-            return self.token.as_ref();
+            return (self.token.as_ref(), self.error.as_ref());
         }
 
         if self.is_done() {
-            return None;
+            return (None, None);
         }
 
         // Reset the potential token, previously accepted token, potential extra token, etc.
@@ -123,7 +123,7 @@ impl Source {
 
         self.initial_state();
 
-        self.token.as_ref()
+        (self.token.as_ref(), self.error.as_ref())
     }
 
     // Start another iteration of the DFA.
@@ -2956,7 +2956,7 @@ mod scanner_keyword_tests {
         let src_str = " \t\n".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn: Option<&Token> = src.scan();
+        let tkn: Option<&Token> = src.scan().0;
         let expected: Option<&Token> = None;
 
         // Basically what this test is doing is checking if tkn == None.
@@ -2969,7 +2969,7 @@ mod scanner_keyword_tests {
         let src_str = "package a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "package".to_string(),
@@ -2987,7 +2987,7 @@ mod scanner_keyword_tests {
         let src_str = "protected package a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "protected".to_string(),
@@ -3005,7 +3005,7 @@ mod scanner_keyword_tests {
         let src_str = "int a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "int".to_string(),
@@ -3023,7 +3023,7 @@ mod scanner_keyword_tests {
         let src_str = "if a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "if".to_string(),
@@ -3041,7 +3041,7 @@ mod scanner_keyword_tests {
         let src_str = "in a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "in".to_string(),
@@ -3059,7 +3059,7 @@ mod scanner_keyword_tests {
         let src_str = "import package a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "import".to_string(),
@@ -3076,7 +3076,7 @@ mod scanner_keyword_tests {
         let src_str = "abstract package a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "abstract".to_string(),
@@ -3093,7 +3093,7 @@ mod scanner_keyword_tests {
         let src_str = "and is true".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "and".to_string(),
@@ -3110,7 +3110,7 @@ mod scanner_keyword_tests {
         let src_str = "final int a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "final".to_string(),
@@ -3127,7 +3127,7 @@ mod scanner_keyword_tests {
         let src_str = "false and true".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "false".to_string(),
@@ -3144,7 +3144,7 @@ mod scanner_keyword_tests {
         let src_str = "sealed int a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "sealed".to_string(),
@@ -3161,7 +3161,7 @@ mod scanner_keyword_tests {
         let src_str = "class a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "class".to_string(),
@@ -3178,7 +3178,7 @@ mod scanner_keyword_tests {
         let src_str = "object a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "object".to_string(),
@@ -3195,7 +3195,7 @@ mod scanner_keyword_tests {
         let src_str = "val a = false;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "val".to_string(),
@@ -3212,7 +3212,7 @@ mod scanner_keyword_tests {
         let src_str = "def this.is.function".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "def".to_string(),
@@ -3231,7 +3231,7 @@ mod scanner_keyword_tests {
 
         // Skip first token just to see what happens
         src.scan();
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "<=".to_string(),
@@ -3248,7 +3248,7 @@ mod scanner_keyword_tests {
         let src_str = "else if".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "else".to_string(),
@@ -3265,7 +3265,7 @@ mod scanner_keyword_tests {
         let src_str = "while is true".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "while".to_string(),
@@ -3282,7 +3282,7 @@ mod scanner_keyword_tests {
         let src_str = "case a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "case".to_string(),
@@ -3300,7 +3300,7 @@ mod scanner_keyword_tests {
         let mut src = Source::new(src_str);
 
         src.scan();
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "=>".to_string(),
@@ -3317,7 +3317,7 @@ mod scanner_keyword_tests {
         let src_str = "return a;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "return".to_string(),
@@ -3334,7 +3334,7 @@ mod scanner_keyword_tests {
         let src_str = "not true".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "not".to_string(),
@@ -3351,7 +3351,7 @@ mod scanner_keyword_tests {
         let src_str = "true and false = false".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "true".to_string(),
@@ -3368,7 +3368,7 @@ mod scanner_keyword_tests {
         let src_str = "or is true".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "or".to_string(),
@@ -3385,7 +3385,7 @@ mod scanner_keyword_tests {
         let src_str = "real a = 5.0".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "real".to_string(),
@@ -3402,7 +3402,7 @@ mod scanner_keyword_tests {
         let src_str = "bool b = false;".to_string();
         let mut src = Source::new(src_str);
 
-        let tkn = src.scan().unwrap();
+        let tkn = src.scan().0.unwrap();
 
         let expected = &Some(Token {
             token: "bool".to_string(),
@@ -3448,7 +3448,7 @@ mod scanner_constant_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3465,7 +3465,7 @@ mod scanner_constant_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3482,7 +3482,7 @@ mod scanner_constant_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3499,7 +3499,7 @@ mod scanner_constant_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3538,7 +3538,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3555,7 +3555,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3572,7 +3572,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3589,7 +3589,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3606,7 +3606,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3623,7 +3623,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3640,7 +3640,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3657,7 +3657,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3674,7 +3674,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3691,7 +3691,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3708,7 +3708,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
 
@@ -3719,7 +3719,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
 
@@ -3730,7 +3730,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3747,7 +3747,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3764,7 +3764,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3781,7 +3781,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3798,7 +3798,7 @@ mod scanner_id_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3820,7 +3820,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3837,7 +3837,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3854,7 +3854,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3871,7 +3871,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3888,7 +3888,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3905,7 +3905,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3922,7 +3922,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3939,7 +3939,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3956,7 +3956,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3973,7 +3973,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -3990,7 +3990,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -4007,7 +4007,7 @@ mod scanner_special_symbol_tests {
         })
         .unwrap();
 
-        let actual: &Token = src.scan().unwrap();
+        let actual: &Token = src.scan().0.unwrap();
 
         assert_eq!(expected, actual);
     }
@@ -4021,9 +4021,9 @@ mod scanner_special_symbol_tests {
         src.scan();
         src.scan();
 
-        let mut tkn = src.scan();
+        let mut tkn = src.scan().0;
         while tkn.is_none() {
-            tkn = src.scan();
+            tkn = src.scan().0;
         }
 
         let expected_tkn: &Token = &Some(Token {
@@ -4055,7 +4055,7 @@ mod bigger_scanner_tests {
         .to_string();
         let mut src: Source = Source::new(src_str);
 
-        let mut tkn = src.scan().unwrap();
+        let mut tkn = src.scan().0.unwrap();
 
         let expected: &Token = &Some(Token {
             token: "int".to_string(),
@@ -4066,7 +4066,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected = &Some(Token {
             token: "a".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4076,7 +4076,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
@@ -4086,7 +4086,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "package".to_string(),
             symbol_type: SymbolType::Keyword,
@@ -4096,7 +4096,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "b".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4106,7 +4106,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
@@ -4116,7 +4116,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "integers".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4126,7 +4126,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "this".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4136,7 +4136,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "is".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4146,7 +4146,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "a".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4156,7 +4156,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "test".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4166,7 +4166,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "of".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4176,7 +4176,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "identifiers".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4186,7 +4186,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "#".to_string(),
             symbol_type: SymbolType::SpecialSymbol,
@@ -4196,7 +4196,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "int".to_string(),
             symbol_type: SymbolType::Keyword,
@@ -4206,7 +4206,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: "c".to_string(),
             symbol_type: SymbolType::Identifier,
@@ -4216,7 +4216,7 @@ mod bigger_scanner_tests {
 
         assert_eq!(expected, tkn);
 
-        tkn = src.scan().unwrap();
+        tkn = src.scan().0.unwrap();
         let expected: &Token = &Some(Token {
             token: ";".to_string(),
             symbol_type: SymbolType::SpecialSymbol,

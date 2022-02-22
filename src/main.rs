@@ -12,7 +12,8 @@ mod bookkeeper;
 mod error;
 mod scanner;
 
-use crate::bookkeeper::{convert_token_to_symbol_table_token, Bookkeeper, SymbolType};
+use crate::bookkeeper::{convert_token_to_symbol_table_token, Bookkeeper, SymbolType, Token};
+use crate::error::Error;
 use crate::scanner::Source;
 
 fn main() {
@@ -47,7 +48,14 @@ fn main() {
     let mut symtab: Bookkeeper = Bookkeeper::new();
 
     while !src.is_done() {
-        let tkn = src.scan();
+        let scan_result = src.scan();
+        let tkn: Option<&Token> = scan_result.0;
+        let err: Option<&Error> = scan_result.1;
+
+        if let Some(..) = err {
+            print!("{}", "An error occurred: ".red().bold());
+            println!("{:?}", err);
+        }
 
         if let Some(..) = tkn {
             // If we have a token of some kind, print it.
@@ -60,10 +68,6 @@ fn main() {
             {
                 symtab.insert(convert_token_to_symbol_table_token(tkn.unwrap().clone()));
             }
-        }
-        if src.error.is_some() {
-            print!("{}", "An error occurred: ".red().bold());
-            println!("{:?}", src.error);
         }
     }
 
