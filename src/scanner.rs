@@ -103,6 +103,11 @@ impl Source {
 
     // Start moving along the DFA.
     pub fn scan(&mut self) -> (Option<&Token>, Option<&Error>) {
+        // Reset the potential token, previously accepted token, potential extra token, etc.
+        self.scanned_characters = "".to_string();
+        self.error = None;
+        self.token = None;
+
         if !self.extra_tokens.is_empty() {
             if DEBUG {
                 eprintln!("The extra token flag is marked.");
@@ -115,11 +120,6 @@ impl Source {
         if self.is_done() {
             return (None, None);
         }
-
-        // Reset the potential token, previously accepted token, potential extra token, etc.
-        self.scanned_characters = "".to_string();
-        self.error = None;
-        self.token = None;
 
         self.initial_state();
 
