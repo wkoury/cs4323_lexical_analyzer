@@ -2766,6 +2766,10 @@ impl Source {
     fn state_112(&mut self) {
         let c = self.read_character();
 
+        if DEBUG {
+            eprintln!("currently in state 112");
+        }
+
         if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
@@ -2776,6 +2780,7 @@ impl Source {
             match c {
                 '0'..='9' => self.state_112(), // Recurse
                 '.' => self.state_113(),
+                c if c.is_alphabetic() => self.state_127(),
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
@@ -2788,6 +2793,10 @@ impl Source {
     fn state_113(&mut self) {
         let c = self.read_character();
 
+        if DEBUG {
+            eprintln!("entered state 113");
+        }
+
         if is_separator(c) {
             self.token = Some(Token {
                 token: self.scanned_characters.clone(),
@@ -2796,12 +2805,8 @@ impl Source {
             });
         } else {
             match c {
-                '0'..='9' => self.state_111(), // Recurse
-                '.' => {
-                    self.error = Some(Error {
-                        error_type: ErrorType::ConstantHasTooManyPeriods,
-                    })
-                }
+                '0'..='9' => self.state_113(), // Recurse
+                '.' => self.state_126(),
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
@@ -2824,16 +2829,16 @@ impl Source {
                 symbol_type: SymbolType::Identifier,
                 line_number: self.line_number,
             });
-        }
-
-        match c {
-            c if c.is_ascii_alphabetic() => self.state_114(),
-            '0'..='9' => self.state_114(),
-            '.' => self.state_114(),
-            _ => {
-                self.error = Some(Error {
-                    error_type: ErrorType::InvalidSymbol,
-                })
+        } else {
+            match c {
+                c if c.is_ascii_alphabetic() => self.state_114(),
+                '0'..='9' => self.state_114(),
+                '.' => self.state_114(),
+                _ => {
+                    self.error = Some(Error {
+                        error_type: ErrorType::InvalidSymbol,
+                    })
+                }
             }
         }
     }
@@ -2929,6 +2934,41 @@ impl Source {
             symbol_type: SymbolType::SpecialSymbol,
             line_number: self.line_number,
         });
+    }
+
+    // This portion of the DFA is reserved for known errors.
+    // This is an additional state intended to handle the case where a constant has too many periods.
+    fn state_126(&mut self) {
+        let c = self.read_character();
+
+        if DEBUG {
+            eprintln!("entered state 126");
+        }
+
+        if is_separator(c) {
+            self.error = Some(Error {
+                error_type: ErrorType::ConstantHasTooManyPeriods,
+            });
+        } else {
+            self.state_126();
+        }
+    }
+
+    // Handle the case where what appears to be an identifier begins with a number
+    fn state_127(&mut self) {
+        let c = self.read_character();
+
+        if DEBUG {
+            eprintln!("entered state 127");
+        }
+
+        if is_separator(c) {
+            self.error = Some(Error {
+                error_type: ErrorType::IdentifierBeginsWithNumber,
+            });
+        } else {
+            self.state_127();
+        }
     }
 }
 
