@@ -5,7 +5,6 @@ pub enum ErrorType {
     InvalidSymbol,
     ConstantHasTooManyPeriods,
     IdentifierBeginsWithNumber,
-    // TODO: add more as you come up with them
 }
 
 #[derive(Clone, Debug, PartialEq)]

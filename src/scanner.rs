@@ -2972,7 +2972,6 @@ impl Source {
     }
 }
 
-// FIXME: you might want to delete these lines of code.
 // Keeping track of all of the special symbols in our language.
 const SPECIAL_SYMBOLS: [char; 12] = ['#', ';', '{', '}', '(', ')', ':', ',', '=', '+', '*', '@'];
 
