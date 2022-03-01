@@ -19,6 +19,7 @@ pub struct Token {
     pub(crate) line_number: usize,
 }
 
+// This tells the program how to println a token in a nice way.
 impl std::fmt::Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
@@ -35,6 +36,7 @@ pub struct SymbolTableToken {
     pub(crate) symbol_type: SymbolType,
 }
 
+// This tells the program how to println a symbol table token in a nice way.
 impl std::fmt::Display for SymbolTableToken {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Token: {}\t Type: {:?}", self.token, self.symbol_type)
@@ -49,17 +51,20 @@ pub fn convert_token_to_symbol_table_token(tkn: Token) -> SymbolTableToken {
     }
 }
 
+// An implementation of our Bookkeeper.
 pub struct Bookkeeper {
     pub(crate) symbols: HashSet<SymbolTableToken>,
 }
 
 impl Bookkeeper {
+    // Create a new bookkeeper.
     pub fn new() -> Self {
         Bookkeeper {
             symbols: HashSet::new(),
         }
     }
 
+    // Insert a token into the bookkeeper, prevent the creation of duplicates using a HashSet.
     pub fn insert(&mut self, t: SymbolTableToken) {
         self.symbols.insert(t);
     }
