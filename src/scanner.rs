@@ -35,6 +35,7 @@ impl Source {
         }
     }
 
+    // Reads a character from the source, and handles some special cases.
     fn read_character(&mut self) -> char {
         if DEBUG {
             eprintln!("self.index = {}", self.index);
@@ -137,7 +138,7 @@ impl Source {
         (self.token.as_ref(), self.error.as_ref())
     }
 
-    // Start another iteration of the DFA.
+    // Start another iteration of the DFA. Scan for another token, though it may return an error instead.
     fn initial_state(&mut self) {
         if DEBUG {
             eprintln!("entered initial state");
@@ -145,6 +146,7 @@ impl Source {
 
         let mut c = self.read_character();
 
+        // If the first character we encounter is whitespace, skip it until we find the beginning of another potential token.
         while c.is_whitespace() {
             if DEBUG {
                 eprintln!("found whitespace");
@@ -157,6 +159,7 @@ impl Source {
             }
         }
 
+        // A NOTE: this is where the DFA begins, if it is of any help to the grader.
         match c {
             'p' => self.state_1(),
             'i' => self.state_23(),
@@ -200,6 +203,7 @@ impl Source {
         }
     }
 
+    // This begins the keywords partition of the DFA, though in certain cases it may exit to the identifiers partition.
     fn state_1(&mut self) {
         let c = self.read_character();
 

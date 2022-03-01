@@ -1,13 +1,16 @@
 #![warn(clippy::all)]
 
+// Importing standard library modules that we need.
 use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::process;
 
+// This is a third-party library that enables printing of styled text to the terminal. It is not noticeable in the .txt output, but it was helpful in debugging this program.
 use colored::*;
 
+// Importing our third-party files.
 mod bookkeeper;
 mod error;
 mod scanner;
@@ -16,6 +19,7 @@ use crate::bookkeeper::{convert_token_to_symbol_table_token, Bookkeeper, SymbolT
 use crate::error::Error;
 use crate::scanner::Source;
 
+// Main. What gets called when we invoke the program.
 fn main() {
     // Collect the command-line arguments
     let args: Vec<String> = env::args().collect();
@@ -47,8 +51,10 @@ fn main() {
     //Initialize the symbol table
     let mut symtab: Bookkeeper = Bookkeeper::new();
 
+    // While the source is not done, keep scanning for tokens.
     while !src.is_done() {
         let scan_result = src.scan();
+        // These are options, which be of type Some() or None.
         let tkn: Option<&Token> = scan_result.0;
         let err: Option<&Error> = scan_result.1;
 
@@ -71,6 +77,7 @@ fn main() {
         }
     }
 
+    // Print out the contents of the symbol table.
     println!("{}", "Symbol table contents:".blue().bold());
     for symbol in symtab.symbols {
         println!("{}", symbol);
