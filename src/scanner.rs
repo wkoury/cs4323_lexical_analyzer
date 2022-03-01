@@ -81,6 +81,17 @@ impl Source {
             return self.read_character();
         }
 
+        // Handle $, which indicates the end of a program.
+        if ret == '$' {
+            if DEBUG {
+                eprintln!("We have encountered a marker indicating the end of the source program.");
+            }
+            // Take the easy path out and just jump to the end of the source, and don't accept any further tokens by enabling comments.
+            self.index = self.source.len();
+            self.comment = true;
+            return ' ';
+        }
+
         // Add the scanned character to our potential token, but only if it is not whitespace or a special symbol, excepting =
         if !(ret.is_whitespace() || (is_special_symbol(ret) && ret != '=')) {
             self.scanned_characters.push(ret);
@@ -98,7 +109,7 @@ impl Source {
 
     // Determine whether we have consumed all characters in the source.
     pub fn is_done(&mut self) -> bool {
-        self.index == self.source.len()
+        self.index >= self.source.len()
     }
 
     // Start moving along the DFA.
@@ -4074,6 +4085,19 @@ mod scanner_special_symbol_tests {
 
         assert_eq!(expected_tkn, tkn.unwrap());
     }
+
+    #[test]
+    fn test_dollar_sign() {
+        let src_str = "\n$\n".to_string();
+        let mut src = Source::new(src_str);
+
+        println!("{:?}", src.scan());
+
+        let expected: bool = true;
+        let actual: bool = src.is_done();
+
+        assert_eq!(expected, actual);
+    }
 }
 
 #[cfg(test)]
@@ -4266,13 +4290,9 @@ mod bigger_scanner_tests {
         assert_eq!(expected, tkn);
 
         src.scan();
-        let expected_err: Error = Some(Error {
-            error_type: ErrorType::InvalidSymbol,
-        })
-        .unwrap();
+        let expected: bool = true;
+        let actual: bool = src.is_done();
 
-        let actual_err: Error = src.error.unwrap();
-
-        assert_eq!(expected_err, actual_err);
+        assert_eq!(expected, actual);
     }
 }
