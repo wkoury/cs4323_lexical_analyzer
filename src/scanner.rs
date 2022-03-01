@@ -194,6 +194,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -218,6 +219,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -241,6 +243,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -264,6 +267,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -287,6 +291,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -310,6 +315,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -333,6 +339,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -362,6 +369,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -387,6 +395,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -411,6 +420,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -434,6 +444,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -457,6 +468,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -480,6 +492,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -509,6 +522,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -533,6 +547,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -555,6 +570,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -579,6 +595,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -602,6 +619,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -625,6 +643,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -648,6 +667,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -671,6 +691,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -694,6 +715,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -716,6 +738,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -742,6 +765,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -765,6 +789,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -788,6 +813,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -811,6 +837,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -834,6 +861,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -856,6 +884,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -886,6 +915,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -910,6 +940,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -933,6 +964,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -958,6 +990,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -981,6 +1014,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1004,6 +1038,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1027,6 +1062,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1050,6 +1086,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1073,6 +1110,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1096,6 +1134,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1118,6 +1157,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1142,6 +1182,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1164,6 +1205,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1189,6 +1231,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1212,6 +1255,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1235,6 +1279,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1258,6 +1303,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1280,6 +1326,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1304,6 +1351,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1327,6 +1375,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1350,6 +1399,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1372,6 +1422,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1396,6 +1447,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1419,6 +1471,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1442,6 +1495,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1465,6 +1519,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1488,6 +1543,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1510,6 +1566,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1534,6 +1591,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1557,6 +1615,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1580,6 +1639,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1602,6 +1662,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1627,6 +1688,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1650,6 +1712,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1673,6 +1736,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1696,6 +1760,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1718,6 +1783,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1742,6 +1808,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1765,6 +1832,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1794,6 +1862,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1818,6 +1887,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1841,6 +1911,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1870,6 +1941,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1894,6 +1966,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1917,6 +1990,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1940,6 +2014,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -1962,6 +2037,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -1983,6 +2059,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2001,6 +2078,7 @@ impl Source {
         } else {
             self.error = Some(Error {
                 error_type: ErrorType::InvalidSymbol,
+                token: self.scanned_characters.clone(),
             });
         }
     }
@@ -2017,6 +2095,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2034,6 +2113,7 @@ impl Source {
         } else {
             self.error = Some(Error {
                 error_type: ErrorType::InvalidSymbol,
+                token: self.scanned_characters.clone(),
             });
         }
     }
@@ -2056,6 +2136,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2079,6 +2160,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2101,6 +2183,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2126,6 +2209,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2148,6 +2232,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2172,6 +2257,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2195,6 +2281,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2218,6 +2305,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2241,6 +2329,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2263,6 +2352,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2287,6 +2377,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2311,6 +2402,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2334,6 +2426,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2357,6 +2450,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2380,6 +2474,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2402,6 +2497,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2426,6 +2522,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2448,6 +2545,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2472,6 +2570,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2495,6 +2594,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2518,6 +2618,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2540,6 +2641,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2564,6 +2666,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2587,6 +2690,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2609,6 +2713,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2633,6 +2738,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2656,6 +2762,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2679,6 +2786,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2702,6 +2810,7 @@ impl Source {
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2724,6 +2833,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2738,11 +2848,13 @@ impl Source {
             '.' => {
                 self.error = Some(Error {
                     error_type: ErrorType::ConstantHasTooManyPeriods,
+                    token: self.scanned_characters.clone(),
                 })
             }
             _ => {
                 self.error = Some(Error {
                     error_type: ErrorType::InvalidSymbol,
+                    token: self.scanned_characters.clone(),
                 })
             }
         }
@@ -2763,11 +2875,13 @@ impl Source {
                 '.' => {
                     self.error = Some(Error {
                         error_type: ErrorType::ConstantHasTooManyPeriods,
+                        token: self.scanned_characters.clone(),
                     })
                 }
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2795,6 +2909,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2821,6 +2936,7 @@ impl Source {
                 _ => {
                     self.error = Some(Error {
                         error_type: ErrorType::InvalidSymbol,
+                        token: self.scanned_characters.clone(),
                     })
                 }
             }
@@ -2845,11 +2961,7 @@ impl Source {
                 c if c.is_ascii_alphabetic() => self.state_114(),
                 '0'..='9' => self.state_114(),
                 '.' => self.state_114(),
-                _ => {
-                    self.error = Some(Error {
-                        error_type: ErrorType::InvalidSymbol,
-                    })
-                }
+                _ => self.state_128(),
             }
         }
     }
@@ -2959,6 +3071,7 @@ impl Source {
         if is_separator(c) {
             self.error = Some(Error {
                 error_type: ErrorType::ConstantHasTooManyPeriods,
+                token: self.scanned_characters.clone(),
             });
         } else {
             self.state_126();
@@ -2976,9 +3089,28 @@ impl Source {
         if is_separator(c) {
             self.error = Some(Error {
                 error_type: ErrorType::IdentifierBeginsWithNumber,
+                token: self.scanned_characters.clone(),
             });
         } else {
             self.state_127();
+        }
+    }
+
+    // Handle the case where we encounter a clearly invalid symbol based on characters that are not allowed.
+    fn state_128(&mut self) {
+        let c = self.read_character();
+
+        if DEBUG {
+            eprintln!("entered state 128");
+        }
+
+        if is_separator(c) {
+            self.error = Some(Error {
+                error_type: ErrorType::InvalidSymbol,
+                token: self.scanned_characters.clone(),
+            });
+        } else {
+            self.state_128();
         }
     }
 }
@@ -3474,6 +3606,7 @@ mod scanner_keyword_tests {
 
         let expected = Some(Error {
             error_type: ErrorType::InvalidSymbol,
+            token: "this_is_not_a_valid_keyword".to_string(),
         });
 
         let actual = src.error;
@@ -3563,6 +3696,7 @@ mod scanner_constant_tests {
 
         let expected_error: Error = Some(Error {
             error_type: ErrorType::ConstantHasTooManyPeriods,
+            token: "25.2.5".to_string(),
         })
         .unwrap();
 

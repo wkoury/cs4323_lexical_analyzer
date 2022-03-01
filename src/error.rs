@@ -10,4 +10,5 @@ pub enum ErrorType {
 #[derive(Clone, Debug, PartialEq)]
 pub struct Error {
     pub(crate) error_type: ErrorType,
+    pub(crate) token: String,
 }
