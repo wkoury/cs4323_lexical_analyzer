@@ -51,6 +51,12 @@ fn main() {
     //Initialize the symbol table
     let mut symtab: Bookkeeper = Bookkeeper::new();
 
+    // Print the header of our table to STDOUT.
+    println!(
+        "{0: <30} | {1: <30} | {2: <30}",
+        "Token", "Symbol Type", "Line Number"
+    );
+
     // While the source is not done, keep scanning for tokens.
     while !src.is_done() {
         let scan_result = src.scan();
@@ -79,6 +85,8 @@ fn main() {
 
     // Print out the contents of the symbol table.
     println!("{}", "Symbol table contents:".blue().bold());
+    // Table header
+    println!("{0: <30} | {1: <}", "Token", "Symbol Type");
     for symbol in symtab.symbols {
         println!("{}", symbol);
     }

@@ -11,6 +11,20 @@ pub enum SymbolType {
     SpecialSymbol,
 }
 
+// This tells the program how to println a SymbolType in a nice way.
+impl std::fmt::Display for SymbolType {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let printable = match *self {
+            SymbolType::Keyword => "Keyword".to_string(),
+            SymbolType::Constant => "Constant".to_string(),
+            SymbolType::Identifier => "Identifier".to_string(),
+            SymbolType::SpecialSymbol => "Special Symbol".to_string(),
+        };
+
+        write!(f, "{}", printable)
+    }
+}
+
 // A struct to store each token that we create.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Token {
@@ -24,8 +38,10 @@ impl std::fmt::Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
-            "Token: {}\t Type: {:?}\t Line: {}",
-            self.token, self.symbol_type, self.line_number
+            "{0: <30} | {1: <30} | {2: <30}",
+            self.token,
+            self.symbol_type.to_string(),
+            self.line_number
         )
     }
 }
@@ -39,7 +55,7 @@ pub struct SymbolTableToken {
 // This tells the program how to println a symbol table token in a nice way.
 impl std::fmt::Display for SymbolTableToken {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Token: {}\t Type: {:?}", self.token, self.symbol_type)
+        write!(f, "{0: <30} | {1: <}", self.token, self.symbol_type)
     }
 }
 
