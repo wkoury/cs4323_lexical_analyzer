@@ -1,0 +1,5 @@
+/target
+.github
+spec.pdf
+readme.md
+Justfile
